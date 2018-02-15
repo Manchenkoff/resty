@@ -1,10 +1,5 @@
-Options +FollowSymlinks
-IndexIgnore */*
 RewriteEngine on
-
-RewriteCond %{REQUEST_URI} !^/(web)
-RewriteRule (.*) /web/$1
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /web/index.php
+RewriteRule . index.php
