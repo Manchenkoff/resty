@@ -10,7 +10,7 @@ class m180214_210240_create_post_table extends Migration {
      * @inheritdoc
      */
     public function up() {
-        $this->createTable('{{post}}', [
+        $this->createTable('{{%post}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string(),
             'body' => $this->text(),
@@ -23,7 +23,7 @@ class m180214_210240_create_post_table extends Migration {
      * @inheritdoc
      */
     public function down() {
-        $this->dropTable('{{post}}');
+        $this->dropTable('{{%post}}');
     }
 
     public function loadSampleData() {

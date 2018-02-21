@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./vendor/bin/yii "$@" --appconfig=app/config/config.php
