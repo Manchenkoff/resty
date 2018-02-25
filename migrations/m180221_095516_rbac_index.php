@@ -11,7 +11,7 @@ class m180221_095516_rbac_index extends Migration {
 
     /**
      * @throws yii\base\InvalidConfigException
-     * @return DbManager
+     * @return mixed
      */
     protected function getAuthManager() {
         $authManager = Yii::$app->getAuthManager();

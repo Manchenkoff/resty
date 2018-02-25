@@ -30,6 +30,10 @@ class Post extends ActiveRecord implements Linkable {
             'id',
             'title',
             'body',
+            //'author',
+            'author' => function () {
+                return $this->author->username;
+            },
 
             // user fields
             'title_big' => function ($item) {
@@ -46,5 +50,9 @@ class Post extends ActiveRecord implements Linkable {
         return [
             Link::REL_SELF => Url::to(['post/view', 'id' => $this->id], true),
         ];
+    }
+    
+    public function getAuthor() {
+        return $this->hasOne(User::className(), ['id' => 'author_id']);
     }
 }

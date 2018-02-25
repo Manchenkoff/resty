@@ -32,6 +32,7 @@ $config = [
         'db' => include('db.php'),
 
         'request' => [
+            'enableCookieValidation' => false,
             'parsers' => [
                 'application/json' => yii\web\JsonParser::class,
             ],
@@ -50,6 +51,7 @@ $config = [
         'user' => [
             'identityClass' => resty\models\User::class,
             'enableSession' => false,
+            'enableAutoLogin' => false,
         ],
 
         'authManager' => [
@@ -69,7 +71,7 @@ $config = [
 // adapt config to CLI (console mode)
 if (php_sapi_name() == "cli") {
     unset($config['bootstrap']);
-    unset($config['components']['request']['parsers']);
+    unset($config['components']['request']);
     unset($config['components']['response']);
     $config['components']['user']['class'] = resty\models\User::class;
 }

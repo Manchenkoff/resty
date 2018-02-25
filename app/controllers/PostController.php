@@ -10,10 +10,7 @@ use resty\models\Post;
 use resty\models\User;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
-use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
-use yii\filters\auth\HttpBearerAuth;
-use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
 
 class PostController extends ActiveController {
@@ -26,7 +23,7 @@ class PostController extends ActiveController {
     public function actions() {
         $actions = parent::actions();
 
-        // define custom providers
+        // define custom actionIndex provider
         $actions['index']['prepareDataProvider'] = [$this, 'alternativeIndex'];
 
         return $actions;
@@ -37,33 +34,37 @@ class PostController extends ActiveController {
      */
     public function behaviors() {
         $behaviors = parent::behaviors();
-
+    
+        /**
+         * Auth settings
+         */
         $behaviors['authenticator'] = [
             'class' => HttpBasicAuth::className(),
-            'auth' => function ($username, $password) {
-                return User::findOne([
-                    'username' => $username,
-                    'password' => $password,
-                ]);
-            },
+            'auth' => 'resty\models\User::basicAuth',
             'only' => [
-                'desc'
+                // disallowed actions
+                'limit'
             ],
             'except' => [
                 // allowed actions
             ],
         ];
-
+    
+        /**
+         * Access controller settings
+         */
         $behaviors['access'] = [
             'class' => AccessControl::class,
             'rules' => [
+                // allow for guests
                 [
                     'allow' => true,
                     'roles' => ['?'],
                 ],
+                // allow for users
                 [
                     'allow' => true,
-                    'actions' => ['desc'],
+                    'actions' => ['limit'],
                     'roles' => ['@'],
                 ]
             ],
@@ -87,8 +88,8 @@ class PostController extends ActiveController {
      * Post API request action sample
      * @return ActiveDataProvider
      */
-    public function actionDesc() {
-        $this->checkAccess('desc');
+    public function actionLimit() {
+        $this->checkAccess('limit');
 
         return new ActiveDataProvider([
             'pagination' => false,

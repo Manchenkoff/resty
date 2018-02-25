@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `post`.
+ * Class m180225_201003_post
  */
-class m180214_210240_create_post_table extends Migration {
+class m180225_201003_post extends Migration {
     /**
      * @inheritdoc
      */
@@ -14,33 +14,48 @@ class m180214_210240_create_post_table extends Migration {
             'id' => $this->primaryKey(),
             'title' => $this->string(),
             'body' => $this->text(),
+            'author_id' => $this->integer(),
         ]);
-
+    
+        if ($this->db->driverName === 'mysql') {
+            $this->addForeignKey(
+                'post_author',
+        
+                '{{%post}}',
+                'author_id',
+        
+                '{{%user}}',
+                'id'
+            );
+        }
+        
         $this->loadSampleData();
     }
-
+    
     /**
      * @inheritdoc
      */
     public function down() {
         $this->dropTable('{{%post}}');
     }
-
+    
     public function loadSampleData() {
         // First post
         $post_item = new resty\models\Post();
-
+        
         $post_item->title = "First post";
         $post_item->body = "Some post content information";
-
+        $post_item->author_id = 2; // manager
+        
         $post_item->save();
-
+        
         // Second post
         $post_item = new resty\models\Post();
-
+        
         $post_item->title = "Second post";
         $post_item->body = "Lorem ipsum is more interesting text";
-
+        $post_item->author_id = 3; // user
+        
         $post_item->save();
     }
 }

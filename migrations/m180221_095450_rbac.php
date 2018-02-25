@@ -8,7 +8,7 @@ use yii\db\Migration;
 class m180221_095450_rbac extends Migration {
     /**
      * @throws yii\base\InvalidConfigException
-     * @return DbManager
+     * @return mixed
      */
     protected function getAuthManager() {
         $authManager = Yii::$app->getAuthManager();

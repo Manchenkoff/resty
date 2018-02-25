@@ -9,8 +9,13 @@ namespace resty\controllers;
 use yii\web\Controller;
 
 class SiteController extends Controller {
-
+    
+    /**
+     * Default action
+     *
+     * @return string
+     */
     public function actionIndex() {
-        return 'Hello World!';
+        return 'Resty is working!';
     }
 }

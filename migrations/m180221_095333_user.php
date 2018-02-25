@@ -17,9 +17,9 @@ class m180221_095333_user extends Migration {
                 'username' => $this->string()->notNull()->unique(),
                 'name' => $this->string()->notNull(),
                 'auth_key' => $this->string(32)->notNull(),
+                'access_token' => $this->string(),
                 'password' => $this->string()->notNull(),
                 'email' => $this->string()->notNull()->unique(),
-                'access_token' => $this->string(),
 
                 'status' => $this->smallInteger()->notNull()->defaultValue(10),
                 'created_at' => $this->integer()->notNull(),

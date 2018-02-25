@@ -18,6 +18,7 @@ use yii\web\IdentityInterface;
  * @property string $username
  * @property string $name
  * @property string $auth_key
+ * @property string $access_token
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
@@ -147,6 +148,7 @@ class User extends ActiveRecord implements IdentityInterface {
      */
     public function generateAuthKey() {
         $this->auth_key = Yii::$app->security->generateRandomString();
+        $this->access_token = $this->auth_key;
     }
 
     /**
@@ -154,6 +156,54 @@ class User extends ActiveRecord implements IdentityInterface {
      */
     public function activate() {
         $this->status = self::STATUS_ACTIVE;
+    }
+    
+    /**
+     * REST basic auth checker
+     *
+     * @param $username
+     * @param $password
+     * @return null|static
+     */
+    public static function basicAuth($username, $password) {
+        return static::findOne([
+            'username' => $username,
+            'password' => $password
+        ]);
+    }
+    
+    /**
+     * Get all posts of current user
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPosts() {
+        return $this->hasMany(Post::className(), ['id' => 'author_id']);
+    }
+    
+    /**
+     * Custom API response fields
+     */
+    public function fields() {
+        $fields = parent::fields();
+        
+        $unset_fields = [
+            'created_at',
+            'updated_at',
+            'password',
+            'auth_key',
+            'access_token',
+        ];
+        
+        foreach ($unset_fields as $f) { unset($fields[$f]); }
+        
+        return $fields;
+    }
+    
+    public function extraFields() {
+        return [
+            'access_token',
+            'password',
+        ];
     }
 }
 
