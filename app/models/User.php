@@ -81,7 +81,10 @@ class User extends ActiveRecord implements IdentityInterface {
             TimestampBehavior::class,
         ];
     }
-
+    
+    /**
+     * @inheritdoc
+     */
     public function scenarios() {
         $scenarios = parent::scenarios();
 
@@ -199,6 +202,10 @@ class User extends ActiveRecord implements IdentityInterface {
         return $fields;
     }
     
+    /**
+     * Extra fields by request
+     * @return array
+     */
     public function extraFields() {
         return [
             'access_token',
