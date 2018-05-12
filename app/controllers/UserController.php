@@ -6,9 +6,9 @@
 
 namespace resty\controllers;
 
+use Yii;
 use resty\models\User;
 use yii\filters\AccessControl;
-use yii\filters\auth\HttpBasicAuth;
 use yii\rest\ActiveController;
 
 class UserController extends ActiveController {
@@ -24,12 +24,7 @@ class UserController extends ActiveController {
         /**
          * Auth settings
          */
-        $behaviors['authenticator'] = [
-            'class' => HttpBasicAuth::class,
-            'auth' => 'resty\models\User::basicAuth',
-            'only' => [],
-            'except' => ['index'],
-        ];
+        $behaviors['authenticator'] = Yii::$app->params['basic_auth'];
     
         /**
          * Access settings

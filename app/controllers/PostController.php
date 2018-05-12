@@ -6,11 +6,11 @@
 
 namespace resty\controllers;
 
+use Yii;
 use resty\models\Post;
 use resty\models\User;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
-use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
 
 class PostController extends ActiveController {
@@ -38,17 +38,7 @@ class PostController extends ActiveController {
         /**
          * Auth settings (with 'token' param in request)
          */
-        $behaviors['authenticator'] = [
-            'class' => QueryParamAuth::class,
-            'tokenParam' => 'token',
-            'only' => [
-                // disallowed actions
-                'limit',
-            ],
-            'except' => [
-                // allowed actions
-            ],
-        ];
+        $behaviors['authenticator'] = Yii::$app->params['token_auth'];
     
         /**
          * Access controller settings

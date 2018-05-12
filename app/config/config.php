@@ -66,6 +66,17 @@ $config = [
             'rules' => include('routes.php'),
         ],
     ],
+
+    'params' => [
+        'token_auth' => [
+            'class' => yii\filters\auth\QueryParamAuth::class,
+            'tokenParam' => 'token',
+        ],
+        'basic_auth' => [
+            'class' => \yii\filters\auth\HttpBasicAuth::class,
+            'auth' => 'resty\models\User::basicAuth',
+        ],
+    ],
 ];
 
 // adapt config to CLI (console mode)
