@@ -99,7 +99,7 @@ class User extends ActiveRecord implements IdentityInterface {
      * @inheritdoc
      */
     public static function findIdentityByAccessToken($token, $type = null) {
-        return static::findOne(['access_token' => $token]);
+        return static::findOne(['auth_key' => $token]);
     }
 
     /**
@@ -147,11 +147,12 @@ class User extends ActiveRecord implements IdentityInterface {
     }
 
     /**
-     * Generates "remember me" authentication key
+     * Generates auth key and token
+     *
+     * @throws \yii\base\Exception
      */
     public function generateAuthKey() {
         $this->auth_key = Yii::$app->security->generateRandomString();
-        $this->access_token = $this->auth_key;
     }
 
     /**
@@ -180,7 +181,7 @@ class User extends ActiveRecord implements IdentityInterface {
      * @return \yii\db\ActiveQuery
      */
     public function getPosts() {
-        return $this->hasMany(Post::className(), ['id' => 'author_id']);
+        return $this->hasMany(Post::class, ['id' => 'author_id']);
     }
     
     /**

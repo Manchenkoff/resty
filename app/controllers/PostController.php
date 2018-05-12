@@ -10,7 +10,7 @@ use resty\models\Post;
 use resty\models\User;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
-use yii\filters\auth\HttpBasicAuth;
+use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
 
 class PostController extends ActiveController {
@@ -36,14 +36,14 @@ class PostController extends ActiveController {
         $behaviors = parent::behaviors();
     
         /**
-         * Auth settings
+         * Auth settings (with 'token' param in request)
          */
         $behaviors['authenticator'] = [
-            'class' => HttpBasicAuth::className(),
-            'auth' => 'resty\models\User::basicAuth',
+            'class' => QueryParamAuth::class,
+            'tokenParam' => 'token',
             'only' => [
                 // disallowed actions
-                'limit'
+                'limit',
             ],
             'except' => [
                 // allowed actions
@@ -86,7 +86,9 @@ class PostController extends ActiveController {
 
     /**
      * Post API request action sample
+     *
      * @return ActiveDataProvider
+     * @throws \yii\web\ForbiddenHttpException
      */
     public function actionLimit() {
         $this->checkAccess('limit');

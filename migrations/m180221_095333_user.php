@@ -17,7 +17,6 @@ class m180221_095333_user extends Migration {
                 'username' => $this->string()->notNull()->unique(),
                 'name' => $this->string()->notNull(),
                 'auth_key' => $this->string(32)->notNull(),
-                'access_token' => $this->string(),
                 'password' => $this->string()->notNull(),
                 'email' => $this->string()->notNull()->unique(),
 
@@ -39,6 +38,11 @@ class m180221_095333_user extends Migration {
         $this->dropTable('{{%user}}');
     }
 
+    /**
+     * Creates admin user
+     *
+     * @throws \yii\base\Exception
+     */
     private function createAdmin() {
         $user = new \resty\models\User();
         $user->scenario = \resty\models\User::SCENARIO_CREATE;
@@ -53,6 +57,11 @@ class m180221_095333_user extends Migration {
         $user->save();
     }
 
+    /**
+     * Creates manager user
+     *
+     * @throws \yii\base\Exception
+     */
     private function createManager() {
         $user = new \resty\models\User();
         $user->scenario = \resty\models\User::SCENARIO_CREATE;
@@ -67,6 +76,11 @@ class m180221_095333_user extends Migration {
         $user->save();
     }
 
+    /**
+     * Creates simple user
+     *
+     * @throws \yii\base\Exception
+     */
     private function createUser() {
         $user = new \resty\models\User();
         $user->scenario = \resty\models\User::SCENARIO_CREATE;

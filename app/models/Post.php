@@ -53,6 +53,6 @@ class Post extends ActiveRecord implements Linkable {
     }
     
     public function getAuthor() {
-        return $this->hasOne(User::className(), ['id' => 'author_id']);
+        return $this->hasOne(User::class, ['id' => 'author_id']);
     }
 }
