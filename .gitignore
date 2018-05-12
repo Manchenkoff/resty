@@ -2,8 +2,8 @@
 # phpstorm project files
 .idea
 
-# webpack modules
-/web/webpack/src/node_modules
+# sqlite database
+/app/database/main.sqlite
 
 # netbeans project files
 nbproject
