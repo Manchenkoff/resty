@@ -27,7 +27,7 @@ Resty is working!
 
 ## Authorization
 
-- /posts/limit - basic auth
+- /posts/* - token auth (from users table in db)
 - /users/* (except /index) - basic auth
 
 ## Routing
