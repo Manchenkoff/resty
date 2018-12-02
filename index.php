@@ -10,6 +10,10 @@ require(__DIR__ . '/vendor/yiisoft/yii2/Yii.php');
 
 $config = require __DIR__ . '/app/config/config.php';
 
-$app = new yii\web\Application($config);
-
-$app->run();
+try {
+    $app = new yii\web\Application($config);
+    $app->run();
+} catch (Exception $exception) {
+    echo $exception->getMessage() . PHP_EOL;
+    die();
+}

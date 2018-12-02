@@ -1,4 +1,11 @@
 # Resty - API app template based on Yii 2 framework
+
+## Features
+
+- Preconfigured authentication by access token
+- Custom JSON response format with *status* and *data* fields for easy use in other apps
+- Sample data with RBAC users and roles
+- 
  
 ## Installation
 
@@ -13,22 +20,11 @@ When all components will be installed, run next command to execute database migr
 yii migrate
 ```
 
-Set up localhost, then open **'http://localhost/site'** in your browser and you will see response message like below:
+Set up localhost, then open **'http://localhost/test'** in your browser and you will see response message like below:
 
 ```text
 Resty is working!
 ```
-
-## Default controllers
-
-- Site
-- Posts
-- User
-
-## Authorization
-
-- /posts/* - token auth (from users table in db)
-- /users/* (except /index) - basic auth
 
 ## Routing
 

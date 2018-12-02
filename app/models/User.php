@@ -4,11 +4,11 @@
  * Copyright © 2015-2018 [DeepSide Interactive]
  */
 
-namespace resty\models;
+namespace app\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
@@ -19,14 +19,15 @@ use yii\web\IdentityInterface;
  * @property string $name
  * @property string $auth_key
  * @property string $access_token
- * @property string $password_hash
+ * @property string $password
  * @property string $password_reset_token
  * @property string $email
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
  */
-class User extends ActiveRecord implements IdentityInterface {
+class User extends ActiveRecord implements IdentityInterface
+{
 
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 10;
@@ -39,14 +40,50 @@ class User extends ActiveRecord implements IdentityInterface {
     /**
      * {@inheritdoc}
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return '{{%user}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return static::findOne(['auth_key' => $token]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne([
+            'id' => $id,
+            'status' => self::STATUS_ACTIVE,
+        ]);
+    }
+
+    /**
+     * Find user by username
+     *
+     * @param $username
+     *
+     * @return null|static
+     */
+    public static function findByUsername($username)
+    {
+        return static::findOne([
+            'username' => $username,
+            'status' => self::STATUS_ACTIVE,
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['username', 'password', 'email', 'created_at', 'updated_at'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
@@ -59,33 +96,20 @@ class User extends ActiveRecord implements IdentityInterface {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function attributeLabels() {
+    public function behaviors()
+    {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'username' => Yii::t('app', 'Username'),
-            'password' => Yii::t('app', 'Password'),
-            'email' => Yii::t('app', 'Email'),
-            'status' => Yii::t('app', 'Status'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            TimestampBehavior::class,
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
-        return [
-            TimestampBehavior::class,
-        ];
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function scenarios() {
+    public function scenarios()
+    {
         $scenarios = parent::scenarios();
 
         $scenarios[self::SCENARIO_REGISTER] = ['username', 'password', 'email', 'name'];
@@ -98,52 +122,25 @@ class User extends ActiveRecord implements IdentityInterface {
     /**
      * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null) {
-        return static::findOne(['auth_key' => $token]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id) {
-        return static::findOne([
-            'id' => $id,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
-
-    /**
-     * Find user by username
-     *
-     * @param $username
-     * @return null|static
-     */
-    public static function findByUsername($username) {
-        return static::findOne([
-            'username' => $username,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getId() {
+    public function getId()
+    {
         return $this->getPrimaryKey();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAuthKey() {
-        return $this->auth_key;
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
     }
 
     /**
      * @inheritdoc
      */
-    public function validateAuthKey($authKey) {
-        return $this->getAuthKey() === $authKey;
+    public function getAuthKey()
+    {
+        return $this->auth_key;
     }
 
     /**
@@ -151,45 +148,35 @@ class User extends ActiveRecord implements IdentityInterface {
      *
      * @throws \yii\base\Exception
      */
-    public function generateAuthKey() {
+    public function generateAuthKey()
+    {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     /**
      * Activates user status
      */
-    public function activate() {
+    public function activate()
+    {
         $this->status = self::STATUS_ACTIVE;
     }
-    
-    /**
-     * REST basic auth checker
-     *
-     * @param $username
-     * @param $password
-     * @return null|static
-     */
-    public static function basicAuth($username, $password) {
-        return static::findOne([
-            'username' => $username,
-            'password' => $password
-        ]);
-    }
-    
+
     /**
      * Get all posts of current user
      * @return \yii\db\ActiveQuery
      */
-    public function getPosts() {
+    public function getPosts()
+    {
         return $this->hasMany(Post::class, ['id' => 'author_id']);
     }
-    
+
     /**
      * Custom API response fields
      */
-    public function fields() {
+    public function fields()
+    {
         $fields = parent::fields();
-        
+
         $unset_fields = [
             'created_at',
             'updated_at',
@@ -197,17 +184,20 @@ class User extends ActiveRecord implements IdentityInterface {
             'auth_key',
             'access_token',
         ];
-        
-        foreach ($unset_fields as $f) { unset($fields[$f]); }
-        
+
+        foreach ($unset_fields as $f) {
+            unset($fields[$f]);
+        }
+
         return $fields;
     }
-    
+
     /**
      * Extra fields by request
      * @return array
      */
-    public function extraFields() {
+    public function extraFields()
+    {
         return [
             'access_token',
             'password',

@@ -5,7 +5,7 @@
  */
 
 return [
-    'class' => yii\db\Connection::class,
+    'class' => \yii\db\Connection::class,
     'charset' => 'utf8',
     'tablePrefix' => 'resty_',
 

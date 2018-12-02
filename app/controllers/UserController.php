@@ -4,47 +4,27 @@
  * Copyright © 2015-2018 [DeepSide Interactive]
  */
 
-namespace resty\controllers;
+namespace app\controllers;
 
-use Yii;
-use resty\models\User;
-use yii\filters\AccessControl;
-use yii\rest\ActiveController;
+use app\controllers\base\MiddlewareController;
+use app\models\User;
 
-class UserController extends ActiveController {
-    
-    public $modelClass = 'resty\models\User';
-    
-    /**
-     * @inheritdoc
-     */
-    public function behaviors() {
-        $behaviors = parent::behaviors();
-    
-        /**
-         * Auth settings
-         */
-        $behaviors['authenticator'] = Yii::$app->params['basic_auth'];
-    
-        /**
-         * Access settings
-         */
-        $behaviors['access'] = [
-            'class' => AccessControl::class,
-            'rules' => [
-                [
-                    'allow' => true,
-                    'roles' => ['?'],
-                ],
-                [
-                    'allow' => true,
-                    'actions' => ['view', 'update', 'delete'],
-                    'roles' => ['manageUser'],
-                ],
+class UserController extends MiddlewareController
+{
+    public $modelClass = User::class;
+
+    protected function accessRules()
+    {
+        return [
+            [
+                'allow' => true,
+                'roles' => ['?'],
+            ],
+            [
+                'allow' => true,
+                'actions' => ['view', 'update', 'delete'],
+                'roles' => ['manageUser'],
             ],
         ];
-        
-        return $behaviors;
     }
-    
 }

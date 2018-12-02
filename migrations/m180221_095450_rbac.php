@@ -5,35 +5,13 @@ use yii\db\Migration;
 /**
  * Class m180221_095450_rbac
  */
-class m180221_095450_rbac extends Migration {
-    /**
-     * @throws yii\base\InvalidConfigException
-     * @return mixed
-     */
-    protected function getAuthManager() {
-        $authManager = Yii::$app->getAuthManager();
-        if (!$authManager instanceof \yii\rbac\DbManager) {
-            throw new \yii\base\InvalidConfigException('You should configure "authManager" component to use database before executing this migration.');
-        }
-
-        return $authManager;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isMSSQL() {
-        return $this->db->driverName === 'mssql' || $this->db->driverName === 'sqlsrv' || $this->db->driverName === 'dblib';
-    }
-
-    protected function isOracle() {
-        return $this->db->driverName === 'oci';
-    }
-
+class m180221_095450_rbac extends Migration
+{
     /**
      * {@inheritdoc}
      */
-    public function up() {
+    public function up()
+    {
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
 
@@ -123,9 +101,50 @@ class m180221_095450_rbac extends Migration {
     }
 
     /**
+     * @throws yii\base\InvalidConfigException
+     * @return mixed
+     */
+    protected function getAuthManager()
+    {
+        $authManager = Yii::$app->getAuthManager();
+        if (!$authManager instanceof \yii\rbac\DbManager) {
+            throw new \yii\base\InvalidConfigException('You should configure "authManager" component to use database before executing this migration.');
+        }
+
+        return $authManager;
+    }
+
+    protected function buildFkClause($delete = '', $update = '')
+    {
+        if ($this->isMSSQL()) {
+            return '';
+        }
+
+        if ($this->isOracle()) {
+            return ' ' . $delete;
+        }
+
+        return implode(' ', ['', $delete, $update]);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isMSSQL()
+    {
+        return $this->db->driverName === 'mssql' || $this->db->driverName === 'sqlsrv' || $this->db->driverName === 'dblib';
+    }
+
+    protected function isOracle()
+    {
+        return $this->db->driverName === 'oci';
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function down() {
+    public function down()
+    {
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
 
@@ -137,17 +156,5 @@ class m180221_095450_rbac extends Migration {
         $this->dropTable($authManager->itemChildTable);
         $this->dropTable($authManager->itemTable);
         $this->dropTable($authManager->ruleTable);
-    }
-
-    protected function buildFkClause($delete = '', $update = '') {
-        if ($this->isMSSQL()) {
-            return '';
-        }
-
-        if ($this->isOracle()) {
-            return ' ' . $delete;
-        }
-
-        return implode(' ', ['', $delete, $update]);
     }
 }

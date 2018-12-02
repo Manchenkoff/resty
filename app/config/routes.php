@@ -10,6 +10,8 @@ return [
     /**
      * SiteController
      */
+    'test' => 'site/index',
+
     [
         'class' => UrlRule::class,
         'controller' => 'site',
@@ -25,10 +27,10 @@ return [
         'pluralize' => true,
         'extraPatterns' => [
             //'METHOD action' => 'actionFunction',
-            'GET limit' => 'limit'
+            'GET limit' => 'limit',
         ],
     ],
-    
+
     /**
      * User Controller
      */

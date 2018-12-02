@@ -4,23 +4,38 @@
  * Copyright © 2015-2018 [DeepSide Interactive]
  */
 
-namespace resty\controllers;
+namespace app\controllers;
 
-use Yii;
-use resty\models\Post;
-use resty\models\User;
+use app\controllers\base\MiddlewareController;
+use app\models\Post;
 use yii\data\ActiveDataProvider;
-use yii\filters\AccessControl;
-use yii\rest\ActiveController;
 
-class PostController extends ActiveController {
+class PostController extends MiddlewareController
+{
+    public $modelClass = Post::class;
 
-    public $modelClass = 'resty\models\Post';
+    protected function accessRules()
+    {
+        return [
+            // allow for guests
+            [
+                'allow' => true,
+                'roles' => ['?'],
+            ],
+            // allow for users
+            [
+                'allow' => true,
+                'actions' => ['limit'],
+                'roles' => ['@'],
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc
      */
-    public function actions() {
+    public function actions()
+    {
         $actions = parent::actions();
 
         // define custom actionIndex provider
@@ -30,45 +45,12 @@ class PostController extends ActiveController {
     }
 
     /**
-     * @inheritdoc
-     */
-    public function behaviors() {
-        $behaviors = parent::behaviors();
-    
-        /**
-         * Auth settings (with 'token' param in request)
-         */
-        $behaviors['authenticator'] = Yii::$app->params['token_auth'];
-    
-        /**
-         * Access controller settings
-         */
-        $behaviors['access'] = [
-            'class' => AccessControl::class,
-            'rules' => [
-                // allow for guests
-                [
-                    'allow' => true,
-                    'roles' => ['?'],
-                ],
-                // allow for users
-                [
-                    'allow' => true,
-                    'actions' => ['limit'],
-                    'roles' => ['@'],
-                ]
-            ],
-        ];
-
-        return $behaviors;
-    }
-
-    /**
      * Custom Index action data provider
      *
      * @return ActiveDataProvider
      */
-    public function alternativeIndex() {
+    public function alternativeIndex()
+    {
         return new ActiveDataProvider([
             'query' => Post::find()->orderBy('id desc'),
         ]);
@@ -78,16 +60,14 @@ class PostController extends ActiveController {
      * Post API request action sample
      *
      * @return ActiveDataProvider
-     * @throws \yii\web\ForbiddenHttpException
      */
-    public function actionLimit() {
-        $this->checkAccess('limit');
-
+    public function actionLimit()
+    {
         return new ActiveDataProvider([
             'pagination' => false,
             'query' => Post::find()
                 ->orderBy('id desc')
-                ->limit(1)
+                ->limit(1),
         ]);
     }
 }

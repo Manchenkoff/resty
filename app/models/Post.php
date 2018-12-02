@@ -4,20 +4,22 @@
  * Copyright © 2015-2018 [DeepSide Interactive]
  */
 
-namespace resty\models;
+namespace app\models;
 
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
 use yii\web\Link;
 use yii\web\Linkable;
 
-class Post extends ActiveRecord implements Linkable {
+class Post extends ActiveRecord implements Linkable
+{
 
     /**
      * Model database table name
      * @return string
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return '{{%post}}';
     }
 
@@ -25,7 +27,8 @@ class Post extends ActiveRecord implements Linkable {
      * Model object attributes (json)
      * @return array
      */
-    public function fields() {
+    public function fields()
+    {
         return [
             'id',
             'title',
@@ -46,13 +49,15 @@ class Post extends ActiveRecord implements Linkable {
      * API object links
      * @return array
      */
-    public function getLinks() {
+    public function getLinks()
+    {
         return [
             Link::REL_SELF => Url::to(['post/view', 'id' => $this->id], true),
         ];
     }
-    
-    public function getAuthor() {
+
+    public function getAuthor()
+    {
         return $this->hasOne(User::class, ['id' => 'author_id']);
     }
 }

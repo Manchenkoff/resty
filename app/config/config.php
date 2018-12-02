@@ -13,7 +13,7 @@ $config = [
 
     'basePath' => $root_dir,
 
-    'controllerNamespace' => 'resty\controllers',
+    'controllerNamespace' => 'app\controllers',
 
     'aliases' => [
         '@resty' => $root_dir . '/app',
@@ -21,10 +21,10 @@ $config = [
 
     'bootstrap' => [
         [
-            'class' => 'yii\filters\ContentNegotiator',
+            'class' => \yii\filters\ContentNegotiator::class,
             'formats' => [
-                'application/json' => \yii\web\Response::FORMAT_JSON
-            ]
+                'application/json' => \yii\web\Response::FORMAT_JSON,
+            ],
         ],
     ],
 
@@ -34,14 +34,31 @@ $config = [
         'request' => [
             'enableCookieValidation' => false,
             'parsers' => [
-                'application/json' => yii\web\JsonParser::class,
+                'application/json' => \yii\web\JsonParser::class,
             ],
         ],
 
         'response' => [
+            'class' => \yii\web\Response::class,
+            // custom response format
+            'on beforeSend' => function ($event) {
+                $response = $event->sender;
+
+                $isResponseNotNull = ($response->data !== null);
+                $isResponseCodeExists = (!empty(Yii::$app->request->get('suppress_response_code')));
+
+                if ($isResponseCodeExists && $isResponseNotNull) {
+                    $response->data = [
+                        'success' => $response->isSuccessful,
+                        'data' => $response->data,
+                    ];
+
+                    $response->statusCode = 200;
+                }
+            },
             'formatters' => [
                 \yii\web\Response::FORMAT_JSON => [
-                    'class' => 'yii\web\JsonResponseFormatter',
+                    'class' => \yii\web\JsonResponseFormatter::class,
                     'prettyPrint' => YII_DEBUG,
                     'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
                 ],
@@ -49,13 +66,13 @@ $config = [
         ],
 
         'user' => [
-            'identityClass' => resty\models\User::class,
+            'identityClass' => app\models\User::class,
             'enableSession' => false,
             'enableAutoLogin' => false,
         ],
 
         'authManager' => [
-            'class' => yii\rbac\DbManager::class,
+            'class' => \yii\rbac\DbManager::class,
         ],
 
         'urlManager' => [
@@ -67,16 +84,7 @@ $config = [
         ],
     ],
 
-    'params' => [
-        'token_auth' => [
-            'class' => yii\filters\auth\QueryParamAuth::class,
-            'tokenParam' => 'token',
-        ],
-        'basic_auth' => [
-            'class' => \yii\filters\auth\HttpBasicAuth::class,
-            'auth' => 'resty\models\User::basicAuth',
-        ],
-    ],
+    'params' => [],
 ];
 
 // adapt config to CLI (console mode)
@@ -84,7 +92,8 @@ if (php_sapi_name() == "cli") {
     unset($config['bootstrap']);
     unset($config['components']['request']);
     unset($config['components']['response']);
-    $config['components']['user']['class'] = resty\models\User::class;
+
+    $config['components']['user']['class'] = app\models\User::class;
 }
 
 return $config;

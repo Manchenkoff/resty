@@ -4,18 +4,29 @@
  * Copyright © 2015-2018 [DeepSide Interactive]
  */
 
-namespace resty\controllers;
+namespace app\controllers;
 
-use yii\web\Controller;
+use app\controllers\base\RestController;
 
-class SiteController extends Controller {
-    
+class SiteController extends RestController
+{
+    protected function accessRules()
+    {
+        return [
+            [
+                'allow' => true,
+                'actions' => ['*'],
+            ]
+        ];
+    }
+
     /**
      * Default action
      *
      * @return string
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         return 'Resty is working!';
     }
 }

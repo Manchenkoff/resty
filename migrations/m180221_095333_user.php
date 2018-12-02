@@ -5,11 +5,13 @@ use yii\db\Migration;
 /**
  * Class m180221_095333_user
  */
-class m180221_095333_user extends Migration {
+class m180221_095333_user extends Migration
+{
     /**
      * {@inheritdoc}
      */
-    public function up() {
+    public function up()
+    {
         $this->createTable(
             '{{%user}}',
             [
@@ -32,18 +34,12 @@ class m180221_095333_user extends Migration {
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function down() {
-        $this->dropTable('{{%user}}');
-    }
-
-    /**
      * Creates admin user
      *
      * @throws \yii\base\Exception
      */
-    private function createAdmin() {
+    private function createAdmin()
+    {
         $user = new \resty\models\User();
         $user->scenario = \resty\models\User::SCENARIO_CREATE;
 
@@ -51,6 +47,7 @@ class m180221_095333_user extends Migration {
         $user->name = 'Main User';
         $user->email = 'admin@example.com';
         $user->password = '123123#';
+
         $user->generateAuthkey();
         $user->activate();
 
@@ -62,7 +59,8 @@ class m180221_095333_user extends Migration {
      *
      * @throws \yii\base\Exception
      */
-    private function createManager() {
+    private function createManager()
+    {
         $user = new \resty\models\User();
         $user->scenario = \resty\models\User::SCENARIO_CREATE;
 
@@ -70,6 +68,7 @@ class m180221_095333_user extends Migration {
         $user->name = 'Second User';
         $user->email = 'manager@example.com';
         $user->password = '123123#';
+
         $user->generateAuthkey();
         $user->activate();
 
@@ -81,7 +80,8 @@ class m180221_095333_user extends Migration {
      *
      * @throws \yii\base\Exception
      */
-    private function createUser() {
+    private function createUser()
+    {
         $user = new \resty\models\User();
         $user->scenario = \resty\models\User::SCENARIO_CREATE;
 
@@ -89,9 +89,18 @@ class m180221_095333_user extends Migration {
         $user->name = 'Simple User';
         $user->email = 'user@example.com';
         $user->password = '123123#';
+
         $user->generateAuthkey();
         $user->activate();
 
         $user->save();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function down()
+    {
+        $this->dropTable('{{%user}}');
     }
 }
