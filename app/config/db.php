@@ -10,7 +10,7 @@ return [
     'tablePrefix' => 'resty_',
 
     // SQLite
-    'dsn' => 'sqlite:@resty/database/main.sqlite',
+    'dsn' => 'sqlite:@app/database/main.sqlite',
     // MySQL
     //'dsn' => 'mysql:host=127.0.0.1;dbname=resty',
 ];
