@@ -5,7 +5,7 @@
 - Preconfigured authentication by access token
 - Custom JSON response format with *status* and *data* fields for easy use in other apps
 - Sample data with RBAC users and roles
-- 
+- HTTP request tests examples
  
 ## Installation
 

@@ -11,7 +11,8 @@ class m180221_095516_rbac_index extends Migration
     public $index = 'auth_assignment_user_id_idx';
 
     /**
-     * {@inheritdoc}
+     * @return bool|void
+     * @throws \yii\base\InvalidConfigException
      */
     public function up()
     {
@@ -34,7 +35,8 @@ class m180221_095516_rbac_index extends Migration
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool|void
+     * @throws \yii\base\InvalidConfigException
      */
     public function down()
     {

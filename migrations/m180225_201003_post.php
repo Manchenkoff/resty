@@ -37,7 +37,7 @@ class m180225_201003_post extends Migration
     public function loadSampleData()
     {
         // First post
-        $post_item = new resty\models\Post();
+        $post_item = new app\models\Post();
 
         $post_item->title = "First post";
         $post_item->body = "Some post content information";
@@ -46,7 +46,7 @@ class m180225_201003_post extends Migration
         $post_item->save();
 
         // Second post
-        $post_item = new resty\models\Post();
+        $post_item = new app\models\Post();
 
         $post_item->title = "Second post";
         $post_item->body = "Lorem ipsum is more interesting text";

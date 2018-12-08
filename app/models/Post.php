@@ -11,9 +11,18 @@ use yii\helpers\Url;
 use yii\web\Link;
 use yii\web\Linkable;
 
+/**
+ * Class Post
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $body
+ * @property int $author_id
+ *
+ * @package app\models
+ */
 class Post extends ActiveRecord implements Linkable
 {
-
     /**
      * Model database table name
      * @return string

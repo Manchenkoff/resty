@@ -8,7 +8,8 @@ use yii\db\Migration;
 class m180221_095333_user extends Migration
 {
     /**
-     * {@inheritdoc}
+     * @return bool|void
+     * @throws \yii\base\Exception
      */
     public function up()
     {
@@ -40,8 +41,8 @@ class m180221_095333_user extends Migration
      */
     private function createAdmin()
     {
-        $user = new \resty\models\User();
-        $user->scenario = \resty\models\User::SCENARIO_CREATE;
+        $user = new \app\models\User();
+        $user->scenario = \app\models\User::SCENARIO_CREATE;
 
         $user->username = 'admin';
         $user->name = 'Main User';
@@ -61,8 +62,8 @@ class m180221_095333_user extends Migration
      */
     private function createManager()
     {
-        $user = new \resty\models\User();
-        $user->scenario = \resty\models\User::SCENARIO_CREATE;
+        $user = new \app\models\User();
+        $user->scenario = \app\models\User::SCENARIO_CREATE;
 
         $user->username = 'manager';
         $user->name = 'Second User';
@@ -82,8 +83,8 @@ class m180221_095333_user extends Migration
      */
     private function createUser()
     {
-        $user = new \resty\models\User();
-        $user->scenario = \resty\models\User::SCENARIO_CREATE;
+        $user = new \app\models\User();
+        $user->scenario = \app\models\User::SCENARIO_CREATE;
 
         $user->username = 'user';
         $user->name = 'Simple User';

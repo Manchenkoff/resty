@@ -23,7 +23,6 @@ class UserController extends MiddlewareController
             [
                 'allow' => true,
                 'actions' => ['view', 'update', 'delete'],
-                'roles' => ['manageUser'],
             ],
         ];
     }
