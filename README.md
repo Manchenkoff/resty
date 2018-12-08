@@ -17,7 +17,7 @@ composer install
 
 When all components will be installed, run next command to execute database migrations (SQLite by default, see configs)
 ```text
-yii migrate
+php yii migrate
 ```
 
 Set up localhost, then open **'http://localhost/test'** in your browser and you will see response message like below:

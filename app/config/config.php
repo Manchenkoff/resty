@@ -16,7 +16,7 @@ $config = [
     'controllerNamespace' => 'app\controllers',
 
     'aliases' => [
-        '@resty' => $root_dir . '/app',
+        '@app' => $root_dir . '/app',
     ],
 
     'bootstrap' => [
