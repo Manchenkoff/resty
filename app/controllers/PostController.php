@@ -1,7 +1,8 @@
 <?php
 /**
- * Created by Artyom Manchenkov
- * Copyright © 2015-2018 [DeepSide Interactive]
+ * Created by Artem Manchenkov
+ * artyom@manchenkoff.me
+ * manchenkoff.me © 2018
  */
 
 namespace app\controllers;

@@ -1,7 +1,8 @@
 <?php
 /**
- * Created by Artyom Manchenkov
- * Copyright © 2015-2018 [DeepSide Interactive]
+ * Created by Artem Manchenkov
+ * artyom@manchenkoff.me
+ * manchenkoff.me © 2018
  */
 
 return [
@@ -10,7 +11,7 @@ return [
     'tablePrefix' => 'resty_',
 
     // SQLite
-    'dsn' => 'sqlite:@app/database/main.sqlite',
+    //'dsn' => 'sqlite:@app/database/main.sqlite',
     // MySQL
-    //'dsn' => 'mysql:host=127.0.0.1;dbname=resty',
+    'dsn' => 'mysql:host=db;dbname=resty',
 ];
