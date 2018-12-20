@@ -7,30 +7,16 @@
 
 namespace app\controllers;
 
-use app\controllers\base\MiddlewareController;
+use app\controllers\base\Middleware;
 use app\models\Post;
 use yii\data\ActiveDataProvider;
+use yii\rest\ActiveController;
 
-class PostController extends MiddlewareController
+class PostController extends ActiveController
 {
-    public $modelClass = Post::class;
+    use Middleware;
 
-    protected function accessRules()
-    {
-        return [
-            // allow for guests
-            [
-                'allow' => true,
-                'roles' => ['?'],
-            ],
-            // allow for users
-            [
-                'allow' => true,
-                'actions' => ['limit'],
-                'roles' => ['@'],
-            ],
-        ];
-    }
+    public $modelClass = Post::class;
 
     /**
      * @inheritdoc
@@ -70,5 +56,22 @@ class PostController extends MiddlewareController
                 ->orderBy('id desc')
                 ->limit(1),
         ]);
+    }
+
+    protected function accessRules()
+    {
+        return [
+            // allow for guests
+            [
+                'allow' => true,
+                'roles' => ['?'],
+            ],
+            // allow for users
+            [
+                'allow' => true,
+                'actions' => ['limit'],
+                'roles' => ['@'],
+            ],
+        ];
     }
 }

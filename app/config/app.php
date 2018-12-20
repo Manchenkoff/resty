@@ -88,13 +88,4 @@ $config = [
     'params' => [],
 ];
 
-// adapt config to CLI (console mode)
-if (php_sapi_name() == "cli") {
-    unset($config['bootstrap']);
-    unset($config['components']['request']);
-    unset($config['components']['response']);
-
-    $config['components']['user']['class'] = app\models\User::class;
-}
-
 return $config;

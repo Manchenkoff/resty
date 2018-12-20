@@ -47,7 +47,6 @@ class Post extends ActiveRecord implements Linkable
             'author' => function () {
                 return $this->author->username;
             },
-
             // user fields
             'title_big' => function ($item) {
                 return strtoupper($item->title);

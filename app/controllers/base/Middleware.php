@@ -9,12 +9,13 @@ namespace app\controllers\base;
 
 use yii\filters\AccessControl;
 use yii\filters\auth\QueryParamAuth;
-use yii\rest\ActiveController;
 
-abstract class MiddlewareController extends ActiveController
+trait Middleware
 {
-    abstract protected function accessRules();
-
+    /**
+     * Basic behaviors: TokenAuth, AccessControl
+     * @return mixed
+     */
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -31,4 +32,18 @@ abstract class MiddlewareController extends ActiveController
 
         return $behaviors;
     }
+
+    /**
+     * AccessControl rules
+     * @return array
+     *
+     * @example return [
+     *     [
+     *         'allow' => true|false,
+     *         'roles' => ['?'],
+     *         'action' => ['index', 'action']
+     *     ],
+     * ];
+     */
+    abstract protected function accessRules();
 }

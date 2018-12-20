@@ -7,19 +7,12 @@
 
 namespace app\controllers;
 
-use app\controllers\base\RestController;
+use app\controllers\base\Middleware;
+use yii\rest\Controller;
 
-class SiteController extends RestController
+class SiteController extends Controller
 {
-    protected function accessRules()
-    {
-        return [
-            [
-                'allow' => true,
-                'actions' => ['*'],
-            ]
-        ];
-    }
+    use Middleware;
 
     /**
      * Default action
@@ -29,5 +22,15 @@ class SiteController extends RestController
     public function actionIndex()
     {
         return 'Resty is working!';
+    }
+
+    protected function accessRules()
+    {
+        return [
+            [
+                'allow' => true,
+                'actions' => ['*'],
+            ],
+        ];
     }
 }

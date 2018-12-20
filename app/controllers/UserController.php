@@ -7,11 +7,14 @@
 
 namespace app\controllers;
 
-use app\controllers\base\MiddlewareController;
+use app\controllers\base\Middleware;
 use app\models\User;
+use yii\rest\ActiveController;
 
-class UserController extends MiddlewareController
+class UserController extends ActiveController
 {
+    use Middleware;
+    
     public $modelClass = User::class;
 
     protected function accessRules()
