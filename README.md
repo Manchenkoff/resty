@@ -17,7 +17,7 @@ Run this command in the terminal
 composer install
 ```
 
-When all components will be installed, run next command to execute database migrations (SQLite by default, see configs)
+When all components will be installed, run next command to execute database migrations (*SQLite* or *MySQL*, see configs)
 ```bash
 php yii migrate
 ```
