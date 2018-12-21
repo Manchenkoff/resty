@@ -7,14 +7,14 @@
 
 namespace app\controllers;
 
-use app\controllers\base\Middleware;
+use app\common\traits\Middleware;
 use app\models\User;
 use yii\rest\ActiveController;
 
 class UserController extends ActiveController
 {
     use Middleware;
-    
+
     public $modelClass = User::class;
 
     protected function accessRules()
@@ -27,6 +27,7 @@ class UserController extends ActiveController
             [
                 'allow' => true,
                 'actions' => ['view', 'update', 'delete'],
+                'roles' => ['manager']
             ],
         ];
     }

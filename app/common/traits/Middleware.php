@@ -5,7 +5,7 @@
  * manchenkoff.me © 2018
  */
 
-namespace app\controllers\base;
+namespace app\common\traits;
 
 use yii\filters\AccessControl;
 use yii\filters\auth\QueryParamAuth;
@@ -37,13 +37,16 @@ trait Middleware
      * AccessControl rules
      * @return array
      *
-     * @example return [
+     * @example
+     * ```php
+     * return [
      *     [
      *         'allow' => true|false,
      *         'roles' => ['?'],
      *         'action' => ['index', 'action']
      *     ],
      * ];
+     * ```
      */
     abstract protected function accessRules();
 }

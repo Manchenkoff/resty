@@ -7,12 +7,13 @@
 
 namespace app\controllers;
 
-use app\controllers\base\Middleware;
+use app\common\traits\ActionDependencyInjection;
+use app\common\traits\Middleware;
 use yii\rest\Controller;
 
 class SiteController extends Controller
 {
-    use Middleware;
+    use Middleware, ActionDependencyInjection;
 
     /**
      * Default action

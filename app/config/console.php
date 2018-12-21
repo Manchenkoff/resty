@@ -6,11 +6,11 @@
  */
 
 return [
-    'id' => 'app-console',
+    'id' => 'resty-cli',
     'basePath' => dirname(__DIR__),
 
     /**
-     * Bootstrap configuration
+     * Components for pre-loading with application
      */
     'bootstrap' => [
         'log',
@@ -18,13 +18,10 @@ return [
 
     'controllerNamespace' => 'app\controllers\console',
 
-    'aliases' => [
-        '@bower' => '@vendor/bower-asset',
-        '@npm' => '@vendor/npm-asset',
-    ],
+    'aliases' => [],
 
     /**
-     * Framework components configuration
+     * Application components
      */
     'components' => [
         'db' => include('db.php'),

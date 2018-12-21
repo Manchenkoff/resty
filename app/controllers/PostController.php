@@ -7,7 +7,7 @@
 
 namespace app\controllers;
 
-use app\controllers\base\Middleware;
+use app\common\traits\Middleware;
 use app\models\Post;
 use yii\data\ActiveDataProvider;
 use yii\rest\ActiveController;
