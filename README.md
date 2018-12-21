@@ -2,21 +2,23 @@
 
 ## Features
 
-- Preconfigured authentication by access token
+- Preconfigured authentication by access token (middleware trait)
 - Custom JSON response format with *status* and *data* fields for easy use in other apps
 - Sample data with RBAC users and roles
 - HTTP request tests examples
+- Docker supports
+- Dependency Injection in Controller actions
  
 ## Installation
 
 Run this command in the terminal
 
-```text
+```bash
 composer install
 ```
 
 When all components will be installed, run next command to execute database migrations (SQLite by default, see configs)
-```text
+```bash
 php yii migrate
 ```
 
