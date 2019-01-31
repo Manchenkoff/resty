@@ -19,12 +19,10 @@ return [
         'class' => \yii\web\Response::class,
         // custom response format
         'on beforeSend' => function ($event) {
+            /** @var \yii\web\Response $response */
             $response = $event->sender;
 
-            $isResponseNotNull = ($response->data !== null);
-            $isResponseCodeExists = (!empty(Yii::$app->request->get('suppress_response_code')));
-
-            if ($isResponseCodeExists && $isResponseNotNull) {
+            if (!$response->isEmpty) {
                 $response->data = [
                     'success' => $response->isSuccessful,
                     'data' => $response->data,
@@ -33,6 +31,7 @@ return [
                 $response->statusCode = 200;
             }
         },
+        'format' => \yii\web\Response::FORMAT_JSON,
         'formatters' => [
             \yii\web\Response::FORMAT_JSON => [
                 'class' => \yii\web\JsonResponseFormatter::class,
