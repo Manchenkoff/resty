@@ -14,6 +14,14 @@ try {
     $app = new yii\web\Application($config);
     $app->run();
 } catch (Exception $exception) {
-    echo $exception->getMessage() . PHP_EOL;
+    $response = [
+        'status' => false,
+        'data' => [
+            'error' => $exception->getMessage(),
+        ],
+    ];
+
+    header('Content-Type: application/json');
+    echo json_encode($response, JSON_PRETTY_PRINT);
     die();
 }

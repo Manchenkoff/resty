@@ -8,12 +8,11 @@
 namespace app\controllers;
 
 use app\common\traits\ActionDependencyInjection;
-use app\common\traits\Middleware;
 use yii\rest\Controller;
 
 class SiteController extends Controller
 {
-    use Middleware, ActionDependencyInjection;
+    use ActionDependencyInjection;
 
     /**
      * Default action
@@ -23,15 +22,5 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return 'Resty is working!';
-    }
-
-    protected function accessRules()
-    {
-        return [
-            [
-                'allow' => true,
-                'actions' => ['*'],
-            ],
-        ];
     }
 }

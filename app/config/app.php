@@ -5,6 +5,9 @@
  * manchenkoff.me © 2018
  */
 
+use yii\filters\ContentNegotiator;
+use yii\web\Response;
+
 $root_dir = dirname(dirname(__DIR__));
 
 $config = [
@@ -31,10 +34,8 @@ $config = [
      */
     'bootstrap' => [
         [
-            'class' => \yii\filters\ContentNegotiator::class,
-            'formats' => [
-                'application/json' => \yii\web\Response::FORMAT_JSON,
-            ],
+            'class' => ContentNegotiator::class,
+            'formats' => ['application/json' => Response::FORMAT_JSON],
         ],
     ],
 

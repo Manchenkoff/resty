@@ -5,22 +5,37 @@
  * manchenkoff.me © 2018
  */
 
+use app\models\User;
+use yii\rbac\DbManager;
+use yii\web\JsonParser;
+use yii\web\JsonResponseFormatter;
+use yii\web\Response;
+
 return [
     'db' => include('db.php'),
 
     'request' => [
         'enableCookieValidation' => false,
         'parsers' => [
-            'application/json' => \yii\web\JsonParser::class,
+            'application/json' => JsonParser::class,
         ],
     ],
 
     'response' => [
-        'class' => \yii\web\Response::class,
+        'class' => Response::class,
+        'format' => Response::FORMAT_JSON,
+        'formatters' => [
+            Response::FORMAT_JSON => [
+                'class' => JsonResponseFormatter::class,
+                'prettyPrint' => YII_DEBUG,
+                'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+            ],
+        ],
         // custom response format
         'on beforeSend' => function ($event) {
             /** @var \yii\web\Response $response */
             $response = $event->sender;
+            $response->format = Response::FORMAT_JSON;
 
             if (!$response->isEmpty) {
                 $response->data = [
@@ -28,27 +43,19 @@ return [
                     'data' => $response->data,
                 ];
 
-                $response->statusCode = 200;
+                $response->statusCode = $response->isSuccessful ? 200 : 400;
             }
         },
-        'format' => \yii\web\Response::FORMAT_JSON,
-        'formatters' => [
-            \yii\web\Response::FORMAT_JSON => [
-                'class' => \yii\web\JsonResponseFormatter::class,
-                'prettyPrint' => YII_DEBUG,
-                'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
-            ],
-        ],
     ],
 
     'user' => [
-        'identityClass' => app\models\User::class,
+        'identityClass' => User::class,
         'enableSession' => false,
         'enableAutoLogin' => false,
     ],
 
     'authManager' => [
-        'class' => \yii\rbac\DbManager::class,
+        'class' => DbManager::class,
     ],
 
     'urlManager' => [
