@@ -9,6 +9,7 @@ namespace app\common\traits;
 
 use yii\filters\AccessControl;
 use yii\filters\auth\QueryParamAuth;
+use yii\web\ForbiddenHttpException;
 
 trait Middleware
 {
@@ -23,11 +24,15 @@ trait Middleware
         $behaviors['authenticator'] = [
             'class' => QueryParamAuth::class,
             'tokenParam' => 'token',
+            'except' => $this->publicActions(),
         ];
 
         $behaviors['access'] = [
             'class' => AccessControl::class,
             'rules' => $this->accessRules(),
+            'denyCallback' => function () {
+                throw new ForbiddenHttpException("You don't have permission to access this page");
+            }
         ];
 
         return $behaviors;
@@ -49,4 +54,13 @@ trait Middleware
      * ```
      */
     abstract protected function accessRules();
+
+    /**
+     * Array of actions without authentication
+     * @return array
+     */
+    protected function publicActions()
+    {
+        return [];
+    }
 }
