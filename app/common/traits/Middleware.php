@@ -8,6 +8,8 @@
 namespace app\common\traits;
 
 use yii\filters\AccessControl;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\web\ForbiddenHttpException;
 
@@ -22,9 +24,17 @@ trait Middleware
         $behaviors = parent::behaviors();
 
         $behaviors['authenticator'] = [
-            'class' => QueryParamAuth::class,
-            'tokenParam' => 'token',
+            'class' => CompositeAuth::class,
             'except' => $this->publicActions(),
+            'authMethods' => [
+                [
+                    'class' => QueryParamAuth::class,
+                    'tokenParam' => 'token',
+                ],
+                [
+                    'class' => HttpBearerAuth::class,
+                ],
+            ],
         ];
 
         $behaviors['access'] = [
