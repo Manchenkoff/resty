@@ -8,9 +8,15 @@
 GET http://localhost:80/site
 Accept: application/json
 
-###
+### Simple HTTP test
 
 GET http://localhost:80/site/auth?token=dev
 Accept: application/json
 
-###
+### Access page with QueryParam token auth
+
+GET http://localhost:80/posts/limit
+Accept: application/json
+Authorization: Bearer dev
+
+### Access page with Bearer token auth

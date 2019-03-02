@@ -14,4 +14,6 @@ return [
     //'dsn' => 'sqlite:@app/database/main.sqlite',
     // MySQL
     'dsn' => 'mysql:host=db;dbname=resty',
+    'username' => 'root',
+    'password' => 'root',
 ];
