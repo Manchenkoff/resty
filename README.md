@@ -1,4 +1,4 @@
-# Resty - API app template based on Yii 2 framework
+# RESTy - API app template based on Yii 2 framework
 
 ## Features
 
