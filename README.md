@@ -9,9 +9,33 @@
 - Based on [Yii 2 project](https://github.com/manchenkoff/yii2-project)
 
 ## Installation
+To install project environment follow the instructions below
 
-WIP ...
+##### Docker
+Deploy with *docker.yml* by command `docker-compose up -f docker.yml` or you can create `Run configuration` with your IDE (ex. PhpStorm)
+
+##### MAMP/LAMP etc
+Set up Apache document root to the base application directory
+
+##### Environment installation
+- Install project dependencies by `composer install`
+- Change `.env` settings for database and necessary sections
+- Start your server (Apache, Nginx, MySQL, Docker etc)
+- Use app init command `php yii app/init` (reset - `php yii app/reset`) for apply migrations and seeders
+- Check project available on `http://localhost/`
 
 ## Directory index
 
-WIP ...
+- `app`: main application directory
+    - `commands`: console controllers
+    - `controllers`: HTTP controllers classes
+    - `core`: application components and classes
+    - `database`: migrations and seeders
+    - `messages`: i18n translations
+    - `models`: application models classes
+    - `routes`: HTTP routes file
+- `config`: configuration files
+    - `deploy`: Deployer tasks and configurations
+    - `test`: Codeception config files
+- `server`: web-server configuration and Docker files
+- `tests`: codeception API and Unit tests
