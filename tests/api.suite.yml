@@ -1,0 +1,16 @@
+# API tests suite
+#
+# `codecept g:cest api testName` - create a new API test
+# `codecept run api` - run API tests
+
+actor: ApiTester
+modules:
+  config:
+    Yii2:
+      configFile: config/test/http.php
+  enabled:
+    - REST:
+        url: /
+        depends: Yii2
+    - \Helper\Api
+    - Asserts

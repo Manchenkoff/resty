@@ -1,12 +1,10 @@
-version: '3'
+version: '3.2'
 services:
   # Apache
   www:
     container_name: resty_server
-    image: manchenkoff/yii-server
     build:
-      context: ./
-      dockerfile: ./docker/Dockerfile
+      context: ./server
     ports:
       - 80:80
       - 443:443
@@ -22,8 +20,9 @@ services:
     image: mysql
     ports:
       - 3306:3306
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: resty
+      MYSQL_DATABASE: dev
     volumes:
-      - ./docker/database:/var/lib/mysql
+      - ./server/runtime/database:/var/lib/mysql

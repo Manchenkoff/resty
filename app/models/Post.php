@@ -2,14 +2,14 @@
 /**
  * Created by Artem Manchenkov
  * artyom@manchenkoff.me
- * manchenkoff.me © 2018
+ * manchenkoff.me © 2019
  */
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
-use yii\helpers\Url;
-use yii\web\Link;
+use manchenkov\yii\database\ActiveRecord;
+use manchenkov\yii\database\traits\SafeModel;
+use yii\db\ActiveQuery;
 use yii\web\Linkable;
 
 /**
@@ -18,55 +18,45 @@ use yii\web\Linkable;
  * @property int $id
  * @property string $title
  * @property string $body
- * @property int $author_id
+ * @property int $user_id
  *
  * @package app\models
  */
 class Post extends ActiveRecord implements Linkable
 {
-    /**
-     * Model database table name
-     * @return string
-     */
+    use SafeModel;
+
     public static function tableName()
     {
-        return '{{%post}}';
+        return 'post';
     }
 
-    /**
-     * Model object attributes (json)
-     * @return array
-     */
-    public function fields()
+    public function rules()
     {
         return [
-            'id',
-            'title',
-            'body',
-            //'author',
-            'author' => function () {
-                return $this->author->username;
-            },
-            // user fields
-            'title_big' => function ($item) {
-                return strtoupper($item->title);
-            },
+            [['user_id'], 'integer'],
+            ['user_id', 'exist', 'targetRelation' => 'author'],
+            [['title', 'body'], 'string'],
         ];
     }
 
     /**
-     * API object links
-     * @return array
+     * @inheritDoc
      */
     public function getLinks()
     {
         return [
-            Link::REL_SELF => Url::to(['post/view', 'id' => $this->id], true),
+            'self' => url(['post/view', 'id' => $this->id]),
+            'author' => url(['user/view', 'id' => $this->id]),
         ];
     }
 
+    /**
+     * Returns User instance
+     * @return ActiveQuery
+     */
     public function getAuthor()
     {
-        return $this->hasOne(User::class, ['id' => 'author_id']);
+        return $this->belongsTo(User::class);
     }
 }

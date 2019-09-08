@@ -1,36 +1,22 @@
-# phpstorm project files
+# IDEs project files
 .idea
-
-# sqlite database
-/app/database/main.sqlite
-
-# netbeans project files
+.vscode
 nbproject
-
-# zend studio for eclipse project files
 .buildpath
 .project
 .settings
 
-# windows thumbnail cache
+# OS cache files
 Thumbs.db
-
-# composer vendor dir
-/vendor
-
-# composer itself is not needed
-composer.phar
-composer.lock
-
-# Mac DS_Store Files
 .DS_Store
 
-# phpunit itself is not needed
-phpunit.phar
-# local phpunit config
-/phpunit.xml
+# Composer files & vendor dir
+composer.phar
+composer.lock
+/vendor
+/server/runtime
 
-tests/_output/*
-tests/_support/_generated
-app/runtime
-docker/database/*
+# Project files
+.env
+/node_modules
+/package-lock.json

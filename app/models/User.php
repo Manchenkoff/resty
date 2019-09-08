@@ -2,101 +2,56 @@
 /**
  * Created by Artem Manchenkov
  * artyom@manchenkoff.me
- * manchenkoff.me © 2018
+ * manchenkoff.me © 2019
  */
 
 namespace app\models;
 
-use Yii;
+use manchenkov\yii\database\ActiveRecord;
+use manchenkov\yii\database\traits\SafeModel;
+use manchenkov\yii\database\traits\SoftDelete;
+use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "{{%user}}".
+ * Class User
+ * @package App\Models
  *
- * @property int $id
- * @property string $username
- * @property string $name
- * @property string $auth_key
- * @property string $access_token
+ * @property int $id [int(11)]
+ * @property string $email [varchar(255)]
+ * @property string $password_hash [varchar(255)]
+ * @property string $token [varchar(32)]
+ * @property bool $is_active [bool]
+ * @property string $first_name [varchar(255)]
+ * @property string $last_name [varchar(255)]
+ * @property int $created_at [int(11)]
+ * @property int $updated_at [int(11)]
+ * @property int $deleted_at [int(11)]
+ * @property string $data [json]
+ *
  * @property string $password
- * @property string $password_reset_token
- * @property string $email
- * @property int $status
- * @property int $created_at
- * @property int $updated_at
+ * @property string $authKey
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 10;
-    const STATUS_ACTIVE = 20;
-
-    const SCENARIO_REGISTER = 'register';
-    const SCENARIO_CREATE = 'create';
-    const SCENARIO_LOGIN = 'login';
+    /**
+     * ActiveRecord traits
+     */
+    use SoftDelete, SafeModel;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%user}}';
+        return 'user';
     }
 
     /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return static::findOne(['auth_key' => $token]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id)
-    {
-        return static::findOne([
-            'id' => $id,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
-
-    /**
-     * Find user by username
-     *
-     * @param $username
-     *
-     * @return null|static
-     */
-    public static function findByUsername($username)
-    {
-        return static::findOne([
-            'username' => $username,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [
-            [['username', 'password', 'email', 'created_at', 'updated_at'], 'required'],
-            [['status', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'name', 'email'], 'string', 'max' => 255],
-            [['email'], 'unique'],
-            [['username'], 'unique'],
-            ['status', 'default', 'value' => self::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-        ];
-    }
-
-    /**
-     * @inheritdoc
+     * Model behaviors array
+     * @return array
      */
     public function behaviors()
     {
@@ -106,17 +61,47 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Model basic validation rules
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            [['email', 'password', 'first_name', 'last_name'], 'required'],
+            [['password', 'token', 'first_name', 'last_name'], 'string'],
+            ['email', 'email'],
+            ['is_active', 'boolean'],
+            [['created_at', 'updated_at', 'deleted_at'], 'integer'],
+            ['data', 'safe'] // json field
+        ];
+    }
+
+    /**
      * @inheritdoc
      */
-    public function scenarios()
+    public static function findIdentity($id)
     {
-        $scenarios = parent::scenarios();
+        return self::findOne($id);
+    }
 
-        $scenarios[self::SCENARIO_REGISTER] = ['username', 'password', 'email', 'name'];
-        $scenarios[self::SCENARIO_CREATE] = ['username', 'password', 'email'];
-        $scenarios[self::SCENARIO_LOGIN] = ['username', 'password'];
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return self::findOne(['token' => $token]);
+    }
 
-        return $scenarios;
+    /**
+     * Finds a user by 'email' value
+     *
+     * @param string $email
+     *
+     * @return User|null
+     */
+    public static function findIdentityByEmail(string $email)
+    {
+        return self::findOne(['email' => $email]);
     }
 
     /**
@@ -130,78 +115,98 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function validateAuthKey($authKey)
+    public function getAuthKey()
     {
-        return $this->getAuthKey() === $authKey;
+        return $this->token;
     }
 
     /**
      * @inheritdoc
      */
-    public function getAuthKey()
+    public function validateAuthKey($authKey)
     {
-        return $this->auth_key;
+        return $this->token == $authKey;
     }
 
     /**
-     * Generates auth key and token
-     *
-     * @throws \yii\base\Exception
+     * Returns original password value
+     * @return string
      */
-    public function generateAuthKey()
+    public function getPassword()
     {
-        $this->auth_key = Yii::$app->security->generateRandomString();
+        return $this->password_hash;
     }
 
     /**
-     * Activates user status
+     * Sets new value with encoding
+     *
+     * @param string $value
+     *
+     * @throws Exception
+     */
+    public function setPassword(string $value)
+    {
+        if (!empty($value)) {
+            $this->password_hash = app()->security->generatePasswordHash($value);
+        }
+    }
+
+    /**
+     * Validates user password with a given value
+     *
+     * @param string $password
+     *
+     * @return bool
+     */
+    public function validatePassword(string $password)
+    {
+        return app()->security->validatePassword($password, $this->password_hash);
+    }
+
+    /**
+     * Generates a new token for current user
+     * @throws Exception
+     */
+    public function generateToken()
+    {
+        $this->token = app()->security->generateRandomString();
+    }
+
+    /**
+     * Updates user password
+     *
+     * @param string $newPassword
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function updatePassword(string $newPassword)
+    {
+        $this->password = $newPassword;
+        $this->generateToken();
+
+        return $this->save();
+    }
+
+    /**
+     * Activates user account
+     * @return bool
+     * @throws Exception
      */
     public function activate()
     {
-        $this->status = self::STATUS_ACTIVE;
+        $this->is_active = true;
+        $this->generateToken();
+
+        return $this->save();
     }
 
     /**
-     * Get all posts of current user
-     * @return \yii\db\ActiveQuery
+     * Returns User posts
+     * @return ActiveQuery
      */
     public function getPosts()
     {
-        return $this->hasMany(Post::class, ['id' => 'author_id']);
-    }
-
-    /**
-     * Custom API response fields
-     */
-    public function fields()
-    {
-        $fields = parent::fields();
-
-        $unset_fields = [
-            'created_at',
-            'updated_at',
-            'password',
-            'auth_key',
-            'access_token',
-        ];
-
-        foreach ($unset_fields as $f) {
-            unset($fields[$f]);
-        }
-
-        return $fields;
-    }
-
-    /**
-     * Extra fields by request
-     * @return array
-     */
-    public function extraFields()
-    {
-        return [
-            'access_token',
-            'password',
-        ];
+        return $this->hasMany(Post::class, ['author_id' => 'id']);
     }
 }
-

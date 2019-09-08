@@ -31,7 +31,7 @@ env('HOST', $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST']);
 require __DIR__ . '/vendor/yiisoft/yii2/Yii.php';
 require __DIR__ . '/config/aliases.php';
 
-$config = require __DIR__ . '/config/http.php';
+$config = require __DIR__ . '/config/test/http.php';
 
 // Try to start application
 try {
