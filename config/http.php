@@ -106,8 +106,6 @@ return [
                             'success' => $response->isSuccessful,
                             'data' => $response->data,
                         ];
-
-                        $response->statusCode = $response->isSuccessful ? 200 : 400;
                     }
                 },
             ],

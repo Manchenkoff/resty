@@ -96,28 +96,26 @@ class UserController extends Controller
     /**
      * Returns the user model
      *
-     * @param $id
+     * @param User $user
      *
      * @return ActiveRecord|null
      * @throws NotFoundHttpException
      */
-    public function actionView($id)
+    public function actionView(User $user)
     {
-        return User::findOrFail(['id' => $id]);
+        return $user;
     }
 
     /**
      * Updates the user with passed parameters
      *
-     * @param $id
+     * @param User $user
      *
      * @return ActiveRecord|mixed|null
      * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate(User $user)
     {
-        $user = User::findOrFail(['id' => $id]);
-
         if ($user->load(request()->post())) {
             if ($user->validate()) {
                 $user->save();
@@ -132,17 +130,15 @@ class UserController extends Controller
     /**
      * Deletes the user model
      *
-     * @param $id
+     * @param User $user
      *
      * @return ActiveRecord|null
      * @throws Throwable
      * @throws StaleObjectException
      * @throws NotFoundHttpException
      */
-    public function actionDelete($id)
+    public function actionDelete(User $user)
     {
-        $user = User::findOrFail(['id' => $id]);
-
         $user->delete();
 
         return $user;

@@ -90,28 +90,26 @@ class PostController extends Controller
     /**
      * Returns the post model
      *
-     * @param $id
+     * @param Post $post
      *
      * @return ActiveRecord|null
      * @throws NotFoundHttpException
      */
-    public function actionView($id)
+    public function actionView(Post $post)
     {
-        return Post::findOrFail(['id' => $id]);
+        return $post;
     }
 
     /**
      * Updates the post with passed parameters
      *
-     * @param $id
+     * @param Post $post
      *
      * @return ActiveRecord|mixed|null
      * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate(Post $post)
     {
-        $post = Post::findOrFail(['id' => $id]);
-
         if ($post->load(request()->post())) {
             if ($post->validate()) {
                 $post->save();
@@ -126,17 +124,15 @@ class PostController extends Controller
     /**
      * Deletes the post model
      *
-     * @param $id
+     * @param Post $post
      *
      * @return ActiveRecord|null
      * @throws Throwable
      * @throws StaleObjectException
      * @throws NotFoundHttpException
      */
-    public function actionDelete($id)
+    public function actionDelete(Post $post)
     {
-        $post = Post::findOrFail(['id' => $id]);
-
         $post->delete();
 
         return $post;
