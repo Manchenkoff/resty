@@ -14,7 +14,7 @@ Thumbs.db
 composer.phar
 composer.lock
 /vendor
-/server/runtime
+/runtime
 
 # Project files
 .env

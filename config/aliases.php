@@ -15,7 +15,7 @@ $root = dirname(__DIR__);
  */
 $aliases = [
     '@app' => $root . '/app',
-    '@runtime' => $root . '/server/runtime',
+    '@runtime' => $root . '/runtime',
     '@vendor' => $root . '/vendor',
     '@bower' => '@vendor/bower-asset',
     '@npm' => '@vendor/npm-asset',

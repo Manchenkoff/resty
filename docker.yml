@@ -1,22 +1,18 @@
-version: '3.2'
+version: '3.7'
 services:
   # Apache
   www:
-    container_name: resty_server
-    build:
-      context: ./server
+    image: manchenkoff/resty
     ports:
       - 80:80
       - 443:443
     environment:
-      XDEBUG_CONFIG: remote_host=host.docker.internal
       PHP_IDE_CONFIG: serverName=localhost
     volumes:
       - ./:/var/www
 
   # MySQL
   db:
-    container_name: resty_database
     image: mysql
     ports:
       - 3306:3306
@@ -25,4 +21,4 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: dev
     volumes:
-      - ./server/runtime/database:/var/lib/mysql
+      - ./runtime/database:/var/lib/mysql
