@@ -9,7 +9,7 @@ services:
     environment:
       PHP_IDE_CONFIG: serverName=localhost
     volumes:
-      - ./:/var/www
+      - ./:/var/www/app/
 
   # MySQL
   db:
