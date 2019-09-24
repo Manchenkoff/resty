@@ -37,5 +37,4 @@ Set up Apache document root to the base application directory
 - `config`: configuration files
     - `deploy`: Deployer tasks and configurations
     - `test`: Codeception config files
-- `server`: web-server configuration and Docker files
 - `tests`: codeception API and Unit tests
