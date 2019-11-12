@@ -2,7 +2,7 @@ version: '3.7'
 services:
   # Apache
   www:
-    image: manchenkoff/resty
+    image: manchenkoff/apache-php-xdebug
     ports:
       - 80:80
       - 443:443
