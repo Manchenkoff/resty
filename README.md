@@ -11,6 +11,11 @@
 ## Installation
 To install project environment follow the instructions below
 
+##### Composer install
+```
+composer create-project manchenkoff/RESTy new-app-name
+```
+
 ##### Docker
 Deploy with *docker.yml* by command `docker-compose up -f docker.yml` or you can create `Run configuration` with your IDE (ex. PhpStorm)
 
