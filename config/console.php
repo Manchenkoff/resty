@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by Artyom Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
 
 /**
  * Main CLI application configuration file
@@ -68,7 +63,6 @@ return [
      * Application components
      */
     'components' => yii\helpers\ArrayHelper::merge(
-        // common application components
         require __DIR__ . '/common.php',
 
         // current application components only

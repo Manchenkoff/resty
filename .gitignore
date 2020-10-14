@@ -12,7 +12,6 @@ Thumbs.db
 
 # Composer files & vendor dir
 composer.phar
-composer.lock
 /vendor
 /runtime
 

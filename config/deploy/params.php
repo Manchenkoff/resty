@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by Artyom Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
 
 namespace Deployer;
 
@@ -48,17 +43,26 @@ set('keep_releases', 2);
 /**
  * Shared files/dirs between deploys
  */
-set('shared_files', [
-    '.env',
-]);
+set(
+    'shared_files',
+    [
+        '.env',
+    ]
+);
 
-set('shared_dirs', [
-    'runtime',
-]);
+set(
+    'shared_dirs',
+    [
+        'runtime',
+    ]
+);
 
 /**
  * Writable dirs by web server
  */
-set('writable_dirs', [
-    'runtime',
-]);
+set(
+    'writable_dirs',
+    [
+        'runtime',
+    ]
+);

@@ -14,6 +14,11 @@
       "app\\": "app/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "tests\\": "tests/"
+    }
+  },
   "scripts": {
     "post-create-project-cmd": [
       "cp .env.example .env"
@@ -26,21 +31,21 @@
     }
   ],
   "require": {
-    "php": ">=7.2",
+    "php": "^7.4",
     "ext-pcntl": "*",
     "ext-json": "*",
-    "yiisoft/yii2": "^2.0.24",
+    "yiisoft/yii2": "^2.0",
     "yiisoft/yii2-swiftmailer": "^2.1",
-    "tebazil/yii2-db-seeder": "^0.0.0",
     "vlucas/phpdotenv": "^3.3",
     "manchenkov/yii2-helpers": "^1.0",
     "manchenkov/php-helpers": "^1.0",
-    "manchenkov/yii2-components": "^1.0"
+    "manchenkov/yii2-components": "^2.0"
   },
   "require-dev": {
+    "tebazil/yii2-db-seeder": "^0.0.0",
     "deployer/deployer": "^6.4",
     "codeception/base": "^3.0",
-    "phpunit/phpunit": "~7",
+    "phpunit/phpunit": "~8",
     "guzzlehttp/guzzle": ">=6.3.0 <7.0",
     "symfony/event-dispatcher": "<=4.2.8",
     "symfony/browser-kit": ">=2.7 <=4.2.4"

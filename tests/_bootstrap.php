@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by Artyom Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
 
 defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(__DIR__));
 defined('YII_DEBUG') or define('YII_DEBUG', true);

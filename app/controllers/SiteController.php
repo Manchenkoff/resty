@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\controllers;
 
 use app\core\http\Controller;
@@ -10,9 +12,18 @@ class SiteController extends Controller
     use Middleware;
 
     /**
+     * Sample home page
+     * @return string
+     */
+    public function actionIndex(): string
+    {
+        return 'Resty is working!';
+    }
+
+    /**
      * @inheritDoc
      */
-    protected function accessRules()
+    protected function accessRules(): array
     {
         return [
             [
@@ -25,17 +36,8 @@ class SiteController extends Controller
     /**
      * @inheritDoc
      */
-    protected function publicActions()
+    protected function publicActions(): array
     {
         return ['*'];
-    }
-
-    /**
-     * Sample home page
-     * @return string
-     */
-    public function actionIndex()
-    {
-        return 'Resty is working!';
     }
 }

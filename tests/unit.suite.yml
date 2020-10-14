@@ -1,7 +1,7 @@
 # Suite for unit or integration tests.
 #
-# `codecept g:test unit testName` - create a new Unit test
-# `codecept run unit` - run Unit tests
+# `./vendor/bin/codecept g:test unit testName` - create a new Unit test
+# `./vendor/bin/codecept run unit` - run Unit tests
 
 actor: UnitTester
 modules:
@@ -9,6 +9,6 @@ modules:
     - Asserts
     - \Helper\Unit
     - Yii2:
-        part: [orm, email]
-        configFile: config/test/console.php
+        part: [ orm, email ]
+        configFile: config/console.php
   step_decorators: ~

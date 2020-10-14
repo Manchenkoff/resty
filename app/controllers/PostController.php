@@ -1,9 +1,6 @@
 <?php
-/**
- * Created by Artem Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
+
+declare(strict_types=1);
 
 namespace app\controllers;
 
@@ -14,7 +11,6 @@ use manchenkov\yii\http\rest\Middleware;
 use Throwable;
 use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
-use yii\web\NotFoundHttpException;
 
 /**
  * Class PostController
@@ -32,47 +28,23 @@ class PostController extends Controller
     use Middleware;
 
     /**
-     * @inheritDoc
-     */
-    protected function accessRules()
-    {
-        return [
-            [
-                'allow' => true,
-                'actions' => ['index'],
-                'roles' => ['?'],
-            ],
-            [
-                'allow' => true,
-                'roles' => ['manager'],
-            ],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function publicActions()
-    {
-        return ['index'];
-    }
-
-    /**
      * Shows posts list
      * @return ActiveDataProvider
      */
-    public function actionIndex()
+    public function actionIndex(): ActiveDataProvider
     {
-        return new ActiveDataProvider([
-            'query' => Post::find(),
-        ]);
+        return new ActiveDataProvider(
+            [
+                'query' => Post::find(),
+            ]
+        );
     }
 
     /**
      * Creates a new post
      * @return Post|mixed
      */
-    public function actionStore()
+    public function actionStore(): Post
     {
         $post = new Post();
 
@@ -93,7 +65,6 @@ class PostController extends Controller
      * @param Post $post
      *
      * @return ActiveRecord|null
-     * @throws NotFoundHttpException
      */
     public function actionView(Post $post)
     {
@@ -106,7 +77,6 @@ class PostController extends Controller
      * @param Post $post
      *
      * @return ActiveRecord|mixed|null
-     * @throws NotFoundHttpException
      */
     public function actionUpdate(Post $post)
     {
@@ -129,12 +99,37 @@ class PostController extends Controller
      * @return ActiveRecord|null
      * @throws Throwable
      * @throws StaleObjectException
-     * @throws NotFoundHttpException
      */
     public function actionDelete(Post $post)
     {
         $post->delete();
 
         return $post;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function accessRules(): array
+    {
+        return [
+            [
+                'allow' => true,
+                'actions' => ['index'],
+                'roles' => ['?'],
+            ],
+            [
+                'allow' => true,
+                'roles' => ['manager'],
+            ],
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function publicActions(): array
+    {
+        return ['index'];
     }
 }

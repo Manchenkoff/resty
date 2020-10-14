@@ -1,12 +1,4 @@
 <?php
-/**
- * Created by Artem Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
-
-use app\core\interfaces\Mailer;
-use app\core\services\MailService;
 
 return [
     /**
@@ -14,7 +6,5 @@ return [
      */
     'definitions' => [
         //'SomeClassInterface::class' => 'SomeClassImplementation::class',
-
-        Mailer::class => MailService::class,
     ],
 ];

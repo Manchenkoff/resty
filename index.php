@@ -1,9 +1,5 @@
 <?php
-/**
- * Created by Artem Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
+
 
 require __DIR__ . '/vendor/autoload.php';
 

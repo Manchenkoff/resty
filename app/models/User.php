@@ -1,9 +1,6 @@
 <?php
-/**
- * Created by Artem Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
+
+declare(strict_types=1);
 
 namespace app\models;
 
@@ -44,36 +41,9 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'user';
-    }
-
-    /**
-     * Model behaviors array
-     * @return array
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-        ];
-    }
-
-    /**
-     * Model basic validation rules
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            [['email', 'password', 'first_name', 'last_name'], 'required'],
-            [['password', 'token', 'first_name', 'last_name'], 'string'],
-            ['email', 'email'],
-            ['is_active', 'boolean'],
-            [['created_at', 'updated_at', 'deleted_at'], 'integer'],
-            ['data', 'safe'] // json field
-        ];
     }
 
     /**
@@ -99,9 +69,36 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return User|null
      */
-    public static function findIdentityByEmail(string $email)
+    public static function findIdentityByEmail(string $email): ?User
     {
         return self::findOne(['email' => $email]);
+    }
+
+    /**
+     * Model behaviors array
+     * @return array
+     */
+    public function behaviors(): array
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
+
+    /**
+     * Model basic validation rules
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            [['email', 'password', 'first_name', 'last_name'], 'required'],
+            [['password', 'token', 'first_name', 'last_name'], 'string'],
+            ['email', 'email'],
+            ['is_active', 'boolean'],
+            [['created_at', 'updated_at', 'deleted_at'], 'integer'],
+            ['data', 'safe'] // json field
+        ];
     }
 
     /**
@@ -115,7 +112,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function getAuthKey()
+    public function getAuthKey(): string
     {
         return $this->token;
     }
@@ -123,7 +120,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function validateAuthKey($authKey)
+    public function validateAuthKey($authKey): bool
     {
         return $this->token == $authKey;
     }
@@ -132,7 +129,7 @@ class User extends ActiveRecord implements IdentityInterface
      * Returns original password value
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password_hash;
     }
@@ -158,9 +155,25 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return bool
      */
-    public function validatePassword(string $password)
+    public function validatePassword(string $password): bool
     {
         return app()->security->validatePassword($password, $this->password_hash);
+    }
+
+    /**
+     * Updates user password
+     *
+     * @param string $newPassword
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function updatePassword(string $newPassword): bool
+    {
+        $this->password = $newPassword;
+        $this->generateToken();
+
+        return $this->save();
     }
 
     /**
@@ -173,27 +186,11 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Updates user password
-     *
-     * @param string $newPassword
-     *
-     * @return bool
-     * @throws Exception
-     */
-    public function updatePassword(string $newPassword)
-    {
-        $this->password = $newPassword;
-        $this->generateToken();
-
-        return $this->save();
-    }
-
-    /**
      * Activates user account
      * @return bool
      * @throws Exception
      */
-    public function activate()
+    public function activate(): bool
     {
         $this->is_active = true;
         $this->generateToken();
@@ -205,7 +202,7 @@ class User extends ActiveRecord implements IdentityInterface
      * Returns User posts
      * @return ActiveQuery
      */
-    public function getPosts()
+    public function getPosts(): ActiveQuery
     {
         return $this->hasMany(Post::class, ['author_id' => 'id']);
     }

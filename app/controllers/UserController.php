@@ -1,9 +1,6 @@
 <?php
-/**
- * Created by Artem Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
+
+declare(strict_types=1);
 
 namespace app\controllers;
 
@@ -13,8 +10,6 @@ use manchenkov\yii\database\ActiveRecord;
 use manchenkov\yii\http\rest\Middleware;
 use Throwable;
 use yii\data\ActiveDataProvider;
-use yii\db\StaleObjectException;
-use yii\web\NotFoundHttpException;
 
 /**
  * Class UserController
@@ -32,9 +27,88 @@ class UserController extends Controller
     use Middleware;
 
     /**
+     * Shows user list
+     * @return ActiveDataProvider
+     */
+    public function actionIndex(): ActiveDataProvider
+    {
+        return new ActiveDataProvider(
+            [
+                'query' => User::find(),
+            ]
+        );
+    }
+
+    /**
+     * Creates a new user
+     * @return User|mixed
+     */
+    public function actionStore(): User
+    {
+        $user = new User();
+
+        if ($user->load(request()->post())) {
+            if ($user->validate()) {
+                $user->save();
+            }
+
+            return $user;
+        }
+
+        return $this->error('Invalid data');
+    }
+
+    /**
+     * Returns the user model
+     *
+     * @param User $user
+     *
+     * @return ActiveRecord|null
+     */
+    public function actionView(User $user)
+    {
+        return $user;
+    }
+
+    /**
+     * Updates the user with passed parameters
+     *
+     * @param User $user
+     *
+     * @return ActiveRecord|mixed|null
+     */
+    public function actionUpdate(User $user)
+    {
+        if ($user->load(request()->post())) {
+            if ($user->validate()) {
+                $user->save();
+            }
+
+            return $user;
+        }
+
+        return $this->error('Invalid data');
+    }
+
+    /**
+     * Deletes the user model
+     *
+     * @param User $user
+     *
+     * @return ActiveRecord|null
+     * @throws Throwable
+     */
+    public function actionDelete(User $user)
+    {
+        $user->delete();
+
+        return $user;
+    }
+
+    /**
      * @inheritDoc
      */
-    protected function accessRules()
+    protected function accessRules(): array
     {
         return [
             [
@@ -58,89 +132,8 @@ class UserController extends Controller
     /**
      * @inheritDoc
      */
-    protected function publicActions()
+    protected function publicActions(): array
     {
         return ['index', 'store'];
-    }
-
-    /**
-     * Shows user list
-     * @return ActiveDataProvider
-     */
-    public function actionIndex()
-    {
-        return new ActiveDataProvider([
-            'query' => User::find(),
-        ]);
-    }
-
-    /**
-     * Creates a new user
-     * @return User|mixed
-     */
-    public function actionStore()
-    {
-        $user = new User();
-
-        if ($user->load(request()->post())) {
-            if ($user->validate()) {
-                $user->save();
-            }
-
-            return $user;
-        }
-
-        return $this->error('Invalid data');
-    }
-
-    /**
-     * Returns the user model
-     *
-     * @param User $user
-     *
-     * @return ActiveRecord|null
-     * @throws NotFoundHttpException
-     */
-    public function actionView(User $user)
-    {
-        return $user;
-    }
-
-    /**
-     * Updates the user with passed parameters
-     *
-     * @param User $user
-     *
-     * @return ActiveRecord|mixed|null
-     * @throws NotFoundHttpException
-     */
-    public function actionUpdate(User $user)
-    {
-        if ($user->load(request()->post())) {
-            if ($user->validate()) {
-                $user->save();
-            }
-
-            return $user;
-        }
-
-        return $this->error('Invalid data');
-    }
-
-    /**
-     * Deletes the user model
-     *
-     * @param User $user
-     *
-     * @return ActiveRecord|null
-     * @throws Throwable
-     * @throws StaleObjectException
-     * @throws NotFoundHttpException
-     */
-    public function actionDelete(User $user)
-    {
-        $user->delete();
-
-        return $user;
     }
 }

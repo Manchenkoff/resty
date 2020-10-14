@@ -1,9 +1,6 @@
 <?php
-/**
- * Created by Artem Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
+
+declare(strict_types=1);
 
 namespace app\models;
 
@@ -26,12 +23,12 @@ class Post extends ActiveRecord implements Linkable
 {
     use SafeModel;
 
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'post';
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['user_id'], 'integer'],
@@ -43,7 +40,7 @@ class Post extends ActiveRecord implements Linkable
     /**
      * @inheritDoc
      */
-    public function getLinks()
+    public function getLinks(): array
     {
         return [
             'self' => url(['post/view', 'id' => $this->id]),
@@ -55,7 +52,7 @@ class Post extends ActiveRecord implements Linkable
      * Returns User instance
      * @return ActiveQuery
      */
-    public function getAuthor()
+    public function getAuthor(): ActiveQuery
     {
         return $this->belongsTo(User::class);
     }

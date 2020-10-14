@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\database\seeders;
 
-use manchenkov\yii\console\Command;
 use Exception;
+use manchenkov\yii\console\Command;
 use yii\base\Action;
 use yii\rbac\ManagerInterface;
 

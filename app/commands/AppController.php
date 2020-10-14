@@ -1,9 +1,6 @@
 <?php
-/**
- * Created by Artyom Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
+
+declare(strict_types=1);
 
 namespace app\commands;
 
@@ -19,6 +16,22 @@ use yii\console\Exception;
  */
 class AppController extends Command
 {
+    /**
+     * Loads basic application environment and data
+     */
+    public function actionInit()
+    {
+        // base commands to init application on a new hosting
+        $this->runSequence(
+            [
+                ['migrate', ['interactive' => 0]],
+                ['seed/user'],
+                ['seed/rbac'],
+                ['seed/post'],
+            ]
+        );
+    }
+
     /**
      * Executes Application actions array
      *
@@ -41,28 +54,16 @@ class AppController extends Command
     }
 
     /**
-     * Loads basic application environment and data
-     */
-    public function actionInit()
-    {
-        // base commands to init application on a new hosting
-        $this->runSequence([
-            ['migrate', ['interactive' => 0]],
-            ['seed/user'],
-            ['seed/rbac'],
-            ['seed/post'],
-        ]);
-    }
-
-    /**
      * Resets and prepares application for use
      */
     public function actionReset()
     {
         // commands to reset current configurations and data removing
-        $this->runSequence([
-            ['migrate/fresh', ['interactive' => 0]],
-            ['app/init'],
-        ]);
+        $this->runSequence(
+            [
+                ['migrate/fresh', ['interactive' => 0]],
+                ['app/init'],
+            ]
+        );
     }
 }

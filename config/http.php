@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by Artyom Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
 
 /**
  * Main HTTP application configuration file
@@ -53,7 +48,6 @@ return [
      * Application components
      */
     'components' => yii\helpers\ArrayHelper::merge(
-        // common application components
         require __DIR__ . '/common.php',
 
         // current application components only
@@ -97,7 +91,7 @@ return [
                 ],
 
                 'on beforeSend' => function ($event) {
-                    /** @var \yii\web\Response $response */
+                    /** @var yii\web\Response $response */
                     $response = $event->sender;
                     $response->format = yii\web\Response::FORMAT_JSON;
 

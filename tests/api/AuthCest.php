@@ -1,14 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
+namespace tests\api;
+
+use ApiTester;
 use app\models\User;
 
 class AuthCest
 {
     public function _before()
     {
-        User::deleteAll([
-            'email' => 'user@example.com',
-        ]);
+        User::deleteAll(
+            [
+                'email' => 'user@example.com',
+            ]
+        );
     }
 
     public function signUpUser(ApiTester $I)
@@ -35,8 +42,8 @@ class AuthCest
     {
         // prepare user data
         $userData = [
-            'email' => 'user@example.com',
-            'password' => '',
+            'email' => '',
+            'password' => '111',
             'first_name' => 'Simple',
             'last_name' => 'User',
         ];
@@ -45,7 +52,7 @@ class AuthCest
 
         $I->seeResponseFailed();
 
-        $I->assertArrayHasKey('password', $I->grabResponseErrors());
+        $I->assertArrayHasKey('email', $I->grabResponseErrors());
     }
 
     public function loginAsUser(ApiTester $I)

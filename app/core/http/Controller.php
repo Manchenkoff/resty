@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by Artem Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
+
+declare(strict_types=1);
 
 namespace app\core\http;
 
 use manchenkov\yii\database\ActiveCollection;
 use manchenkov\yii\http\Controller as HttpController;
 use Yii;
-use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\data\ArrayDataProvider;
 use yii\data\DataProviderInterface;
@@ -24,7 +20,7 @@ class Controller extends HttpController
     /**
      * @inheritDoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             RateLimiter::class,
@@ -36,6 +32,17 @@ class Controller extends HttpController
                 ],
             ],
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws InvalidConfigException
+     */
+    public function afterAction($action, $result)
+    {
+        $response = parent::afterAction($action, $result);
+
+        return $this->serializeResponse($response);
     }
 
     /**
@@ -52,29 +59,15 @@ class Controller extends HttpController
             $collection = $data->getModels();
 
             if ($collection instanceof ActiveCollection) {
-                $data = new ArrayDataProvider([
-                    'models' => $collection->all(),
-                ]);
+                $data = new ArrayDataProvider(
+                    [
+                        'models' => $collection->all(),
+                    ]
+                );
             }
         }
 
         return Yii::createObject(Serializer::class)->serialize($data);
-    }
-
-    /**
-     * Normalizes the response
-     *
-     * @param Action $action
-     * @param mixed $result
-     *
-     * @return mixed
-     * @throws InvalidConfigException
-     */
-    public function afterAction($action, $result)
-    {
-        $response = parent::afterAction($action, $result);
-
-        return $this->serializeResponse($response);
     }
 
     /**
@@ -84,7 +77,7 @@ class Controller extends HttpController
      *
      * @return mixed
      */
-    protected function error($data)
+    protected function error($data): array
     {
         app()->response->setStatusCode(400, 'Error');
 

@@ -1,17 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
+namespace tests\api;
+
+use ApiTester;
 use app\models\User;
 
 class UsersCest
 {
     public function deleteUserAsUser(ApiTester $I)
     {
-        $tempUser = new User([
-            'email' => 'user1@example.com',
-            'password' => '12345678',
-            'first_name' => 'Simple',
-            'last_name' => 'User',
-        ]);
+        $tempUser = new User(
+            [
+                'email' => 'user1@example.com',
+                'password' => '12345678',
+                'first_name' => 'Simple',
+                'last_name' => 'User',
+            ]
+        );
 
         $I->assertTrue($tempUser->save());
 
@@ -29,12 +36,14 @@ class UsersCest
 
     public function deleteUserAsManager(ApiTester $I)
     {
-        $tempUser = new User([
-            'email' => 'user2@example.com',
-            'password' => '12345678',
-            'first_name' => 'Simple',
-            'last_name' => 'User',
-        ]);
+        $tempUser = new User(
+            [
+                'email' => 'user2@example.com',
+                'password' => '12345678',
+                'first_name' => 'Simple',
+                'last_name' => 'User',
+            ]
+        );
 
         $I->assertTrue($tempUser->save());
 
@@ -51,9 +60,12 @@ class UsersCest
 
         $newLastName = "UPD_" . time();
 
-        $I->sendPOST("users/{$user->id}?token={$user->token}", [
-            'last_name' => $newLastName
-        ]);
+        $I->sendPOST(
+            "users/{$user->id}?token={$user->token}",
+            [
+                'last_name' => $newLastName,
+            ]
+        );
 
         $I->seeResponseSuccessful();
 

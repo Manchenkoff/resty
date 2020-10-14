@@ -1,9 +1,6 @@
 <?php
-/**
- * Created by Artyom Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
+
+declare(strict_types=1);
 
 use manchenkov\yii\http\routing\Route;
 
@@ -15,4 +12,3 @@ return [
     Route::resource('post'),
 
 ];
-

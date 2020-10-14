@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
+use _generated\ApiTesterActions;
 use Codeception\Actor;
 
 /**
@@ -19,27 +22,7 @@ use Codeception\Actor;
  */
 class ApiTester extends Actor
 {
-    use _generated\ApiTesterActions;
-
-    /**
-     * Returns response as array
-     * @return array
-     */
-    public function grabResponseAsArray()
-    {
-        return json_decode($this->grabResponse(), true);
-    }
-
-    /**
-     * Returns response status
-     * @return array
-     */
-    public function grabResponseStatus()
-    {
-        $response = $this->grabResponseAsArray();
-
-        return $response['success'];
-    }
+    use ApiTesterActions;
 
     /**
      * Checks is response status OK
@@ -48,6 +31,26 @@ class ApiTester extends Actor
     {
         $this->seeResponseIsJson();
         $this->assertTrue($this->grabResponseStatus());
+    }
+
+    /**
+     * Returns response status
+     * @return bool
+     */
+    public function grabResponseStatus(): bool
+    {
+        $response = $this->grabResponseAsArray();
+
+        return $response['success'];
+    }
+
+    /**
+     * Returns response as array
+     * @return array
+     */
+    public function grabResponseAsArray(): array
+    {
+        return json_decode($this->grabResponse(), true);
     }
 
     /**
@@ -60,21 +63,10 @@ class ApiTester extends Actor
     }
 
     /**
-     * Returns response data as array
-     * @return array
-     */
-    public function grabResponseData()
-    {
-        $response = $this->grabResponseAsArray();
-
-        return $response['data'];
-    }
-
-    /**
      * Returns response errors as array
      * @return array
      */
-    public function grabResponseErrors()
+    public function grabResponseErrors(): array
     {
         $errors = [];
 
@@ -86,5 +78,16 @@ class ApiTester extends Actor
         }
 
         return $errors;
+    }
+
+    /**
+     * Returns response data as array
+     * @return array
+     */
+    public function grabResponseData(): array
+    {
+        $response = $this->grabResponseAsArray();
+
+        return $response['data'];
     }
 }

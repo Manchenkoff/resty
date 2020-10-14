@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+namespace tests\api;
+
+use ApiTester;
 use app\models\Post;
 use app\models\User;
 
@@ -58,9 +63,12 @@ class PostsCest
 
         $newPostTitle = 'UPD_' . time();
 
-        $I->sendPOST("posts/{$post->id}?token={$user->token}", [
-            'title' => $newPostTitle,
-        ]);
+        $I->sendPOST(
+            "posts/{$post->id}?token={$user->token}",
+            [
+                'title' => $newPostTitle,
+            ]
+        );
 
         $I->seeResponseSuccessful();
 

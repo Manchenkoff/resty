@@ -1,9 +1,6 @@
 <?php
-/**
- * Created by Artem Manchenkov
- * artyom@manchenkoff.me
- * manchenkoff.me © 2019
- */
+
+declare(strict_types=1);
 
 namespace app\database\seeders;
 
@@ -26,17 +23,21 @@ class PostSeeder extends Action
     public function run()
     {
         $posts = [
-            new Post([
-                'title' => 'First post',
-                'body' => 'First post content sample',
-                'user_id' => 2 // manager
-            ]),
+            new Post(
+                [
+                    'title' => 'First post',
+                    'body' => 'First post content sample',
+                    'user_id' => 2 // manager
+                ]
+            ),
 
-            new Post([
-                'title' => 'Second post',
-                'body' => 'Second post content sample',
-                'user_id' => 3 // user
-            ]),
+            new Post(
+                [
+                    'title' => 'Second post',
+                    'body' => 'Second post content sample',
+                    'user_id' => 3 // user
+                ]
+            ),
         ];
 
         try {
