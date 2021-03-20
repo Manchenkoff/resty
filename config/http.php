@@ -56,7 +56,7 @@ return [
              * Web Request component
              */
             'request' => [
-                'class' => manchenkov\yii\http\Request::class,
+                'class' => manchenkov\yii\http\InternationalRequest::class,
                 'baseUrl' => '',
                 'enableCookieValidation' => false,
                 'enableCsrfValidation' => false,

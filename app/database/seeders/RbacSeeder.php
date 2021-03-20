@@ -15,13 +15,13 @@ use yii\rbac\ManagerInterface;
  *
  * @property-read Command $controller
  */
-class RbacSeeder extends Action
+final class RbacSeeder extends Action
 {
     /**
      * Creates basic RBAC configuration
      * @throws Exception
      */
-    public function run()
+    public function run(): void
     {
         $rbac = app()->authManager;
 
@@ -36,7 +36,7 @@ class RbacSeeder extends Action
      * @throws \yii\base\Exception
      * @throws Exception
      */
-    public function baseRoles(ManagerInterface $manager)
+    public function baseRoles(ManagerInterface $manager): void
     {
         $roleUser = $manager->createRole('user');
         $manager->add($roleUser);

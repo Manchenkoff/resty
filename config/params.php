@@ -8,4 +8,3 @@ return [
     'email.support' => env('MAIL_SUPPORT'),
     'email.no-reply' => env('MAIL_NOTIFY'),
 ];
-

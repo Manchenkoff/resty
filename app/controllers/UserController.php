@@ -7,8 +7,6 @@ namespace app\controllers;
 use app\core\http\Controller;
 use app\models\User;
 use manchenkov\yii\database\ActiveRecord;
-use manchenkov\yii\http\rest\Middleware;
-use Throwable;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -22,10 +20,8 @@ use yii\data\ActiveDataProvider;
  *    'POST users/<id>' => 'user/update',
  *    'DELETE users/<id>' => 'user/delete',
  */
-class UserController extends Controller
+final class UserController extends Controller
 {
-    use Middleware;
-
     /**
      * Shows user list
      * @return ActiveDataProvider
@@ -96,7 +92,6 @@ class UserController extends Controller
      * @param User $user
      *
      * @return ActiveRecord|null
-     * @throws Throwable
      */
     public function actionDelete(User $user)
     {

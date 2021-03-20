@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help up down reload start stop app-init app-reset yii
+.PHONY: help up down reload start stop app-init app-reset app-login test lint
 
 DOCKER_COMPOSE_CMD := docker-compose -f docker.yml
 PHP_CMD := $(DOCKER_COMPOSE_CMD) exec "php"
@@ -39,3 +39,7 @@ app-login: ## Login into application console
 test: ## Run application tests
 	@$(PHP_CMD) ./vendor/bin/codecept build
 	@$(PHP_CMD) ./vendor/bin/codecept run
+
+lint: ## Run cs-fixer linter
+	@echo "Code style fixing..."
+	@docker run --rm -v $(PWD):/data cytopia/php-cs-fixer fix . --diff

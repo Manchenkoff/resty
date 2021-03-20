@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace app\models;
 
 use manchenkov\yii\database\ActiveRecord;
-use manchenkov\yii\database\traits\SafeModel;
 use manchenkov\yii\database\traits\SoftDelete;
 use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
@@ -13,9 +12,6 @@ use yii\db\ActiveQuery;
 use yii\web\IdentityInterface;
 
 /**
- * Class User
- * @package App\Models
- *
  * @property int $id [int(11)]
  * @property string $email [varchar(255)]
  * @property string $password_hash [varchar(255)]
@@ -33,10 +29,7 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    /**
-     * ActiveRecord traits
-     */
-    use SoftDelete, SafeModel;
+    use SoftDelete;
 
     /**
      * @inheritdoc
@@ -122,7 +115,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validateAuthKey($authKey): bool
     {
-        return $this->token == $authKey;
+        return $this->token === $authKey;
     }
 
     /**
@@ -141,7 +134,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @throws Exception
      */
-    public function setPassword(string $value)
+    public function setPassword(string $value): void
     {
         if (!empty($value)) {
             $this->password_hash = app()->security->generatePasswordHash($value);
@@ -180,7 +173,7 @@ class User extends ActiveRecord implements IdentityInterface
      * Generates a new token for current user
      * @throws Exception
      */
-    public function generateToken()
+    public function generateToken(): void
     {
         $this->token = app()->security->generateRandomString();
     }

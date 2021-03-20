@@ -14,7 +14,7 @@ namespace Deployer;
  */
 task(
     'supervisor:stop',
-    function () {
+    static function () {
         run('sudo supervisorctl stop all');
     }
 )->desc(
@@ -23,7 +23,7 @@ task(
 
 task(
     'supervisor:start',
-    function () {
+    static function () {
         run('sudo supervisorctl start all');
     }
 )->desc(
@@ -32,7 +32,7 @@ task(
 
 task(
     'yii:migrate',
-    function () {
+    static function () {
         run('{{bin/php}} {{release_path}}/yii migrate --interactive=0');
     }
 )->desc(
@@ -41,7 +41,7 @@ task(
 
 task(
     'deploy:env',
-    function () {
+    static function () {
         upload('.env.example', '{{deploy_path}}/shared/.env');
     }
 )->desc(
@@ -50,14 +50,14 @@ task(
 
 task(
     'deploy:symlink',
-    function () {
+    static function () {
         // remove older public directory
         run('rm {{public_path}} -rf');
 
         // create custom symlink
         within(
             '{{deploy_path}}',
-            function () {
+            static function () {
                 run("{{bin/symlink}} {{release_path}} {{public_path}}");
                 run("rm release"); // Remove release link.
             }

@@ -25,8 +25,4 @@ use Codeception\Actor;
 class UnitTester extends Actor
 {
     use UnitTesterActions;
-
-    /**
-     * Define custom actions here
-     */
 }

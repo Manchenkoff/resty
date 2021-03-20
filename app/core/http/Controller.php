@@ -5,21 +5,22 @@ declare(strict_types=1);
 namespace app\core\http;
 
 use manchenkov\yii\database\ActiveCollection;
-use manchenkov\yii\http\Controller as HttpController;
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\data\ArrayDataProvider;
 use yii\data\DataProviderInterface;
+use yii\filters\AccessControl;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\QueryParamAuth;
 use yii\filters\ContentNegotiator;
 use yii\filters\RateLimiter;
 use yii\rest\Serializer;
+use yii\web\Controller as HttpController;
+use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
-class Controller extends HttpController
+abstract class Controller extends HttpController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors(): array
     {
         return [
@@ -31,13 +32,31 @@ class Controller extends HttpController
                     'application/json' => Response::FORMAT_JSON,
                 ],
             ],
+
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => $this->accessRules(),
+                'denyCallback' => static function () {
+                    throw new ForbiddenHttpException("You don't have permission to access this page");
+                },
+            ],
+
+            'authenticator' => [
+                'class' => CompositeAuth::class,
+                'except' => $this->publicActions(),
+                'authMethods' => [
+                    [
+                        'class' => QueryParamAuth::class,
+                        'tokenParam' => 'token',
+                    ],
+                    [
+                        'class' => HttpBearerAuth::class,
+                    ],
+                ],
+            ],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     * @throws InvalidConfigException
-     */
     public function afterAction($action, $result)
     {
         $response = parent::afterAction($action, $result);
@@ -46,12 +65,12 @@ class Controller extends HttpController
     }
 
     /**
-     * Serializes the specified data
-     *
      * @param $data
      *
-     * @return mixed
-     * @throws InvalidConfigException
+     * @return array|mixed|null
+     *
+     * @noinspection PhpUnhandledExceptionInspection
+     * @noinspection PhpDocMissingThrowsInspection
      */
     protected function serializeResponse($data)
     {
@@ -83,4 +102,30 @@ class Controller extends HttpController
 
         return is_string($data) ? ['error' => $data] : $data;
     }
+
+    /**
+     * Array of actions without authentication
+     * @return array
+     */
+    protected function publicActions(): array
+    {
+        return [];
+    }
+
+    /**
+     * AccessControl rules
+     * @return array
+     *
+     * @example
+     * ```php
+     * return [
+     *     [
+     *         'allow' => true|false,
+     *         'roles' => ['?'],
+     *         'action' => ['index', 'action']
+     *     ],
+     * ];
+     * ```
+     */
+    abstract protected function accessRules(): array;
 }
