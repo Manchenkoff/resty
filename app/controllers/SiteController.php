@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\core\http\Controller;
-use manchenkov\yii\http\rest\Middleware;
 
-class SiteController extends Controller
+final class SiteController extends Controller
 {
-    use Middleware;
-
     /**
      * Sample home page
      * @return string

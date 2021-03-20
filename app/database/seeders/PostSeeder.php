@@ -15,12 +15,12 @@ use yii\base\Action;
  *
  * @property-read Command $controller
  */
-class PostSeeder extends Action
+final class PostSeeder extends Action
 {
     /**
      * Creates default posts
      */
-    public function run()
+    public function run(): void
     {
         $posts = [
             new Post(

@@ -2,7 +2,7 @@
 
 namespace Deployer;
 
-$root = dirname(dirname(__DIR__));
+$root = dirname(__DIR__, 2);
 
 // Include configuration files
 require $root . '/vendor/autoload.php';

@@ -5,24 +5,17 @@ declare(strict_types=1);
 namespace app\models;
 
 use manchenkov\yii\database\ActiveRecord;
-use manchenkov\yii\database\traits\SafeModel;
 use yii\db\ActiveQuery;
 use yii\web\Linkable;
 
 /**
- * Class Post
- *
  * @property int $id
  * @property string $title
  * @property string $body
  * @property int $user_id
- *
- * @package app\models
  */
-class Post extends ActiveRecord implements Linkable
+final class Post extends ActiveRecord implements Linkable
 {
-    use SafeModel;
-
     public static function tableName(): string
     {
         return 'post';

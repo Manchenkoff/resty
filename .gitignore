@@ -19,3 +19,4 @@ composer.phar
 .env
 /node_modules
 /package-lock.json
+.php_cs.cache

@@ -1,6 +1,6 @@
 {
-  "name": "manchenkov/yii2-project",
-  "description": "Custom Yii 2 application boilerplate",
+  "name": "manchenkov/resty",
+  "description": "API app template based on Yii 2 framework",
   "type": "project",
   "license": "MIT",
   "authors": [
@@ -39,9 +39,10 @@
     "vlucas/phpdotenv": "^3.3",
     "manchenkov/yii2-helpers": "^1.0",
     "manchenkov/php-helpers": "^1.0",
-    "manchenkov/yii2-components": "^2.0"
+    "manchenkov/yii2-components": "^3.0.1"
   },
   "require-dev": {
+    "roave/security-advisories": "dev-master",
     "tebazil/yii2-db-seeder": "^0.0.0",
     "deployer/deployer": "^6.4",
     "codeception/base": "^3.0",

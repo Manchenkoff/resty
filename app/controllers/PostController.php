@@ -7,10 +7,7 @@ namespace app\controllers;
 use app\core\http\Controller;
 use app\models\Post;
 use manchenkov\yii\database\ActiveRecord;
-use manchenkov\yii\http\rest\Middleware;
-use Throwable;
 use yii\data\ActiveDataProvider;
-use yii\db\StaleObjectException;
 
 /**
  * Class PostController
@@ -23,10 +20,8 @@ use yii\db\StaleObjectException;
  *    'POST posts/<id>' => 'post/update',
  *    'DELETE posts/<id>' => 'post/delete',
  */
-class PostController extends Controller
+final class PostController extends Controller
 {
-    use Middleware;
-
     /**
      * Shows posts list
      * @return ActiveDataProvider
@@ -97,8 +92,9 @@ class PostController extends Controller
      * @param Post $post
      *
      * @return ActiveRecord|null
-     * @throws Throwable
-     * @throws StaleObjectException
+     *
+     * @noinspection PhpUnhandledExceptionInspection
+     * @noinspection PhpDocMissingThrowsInspection
      */
     public function actionDelete(Post $post)
     {

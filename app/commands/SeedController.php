@@ -7,13 +7,13 @@ namespace app\commands;
 use app\database\seeders\PostSeeder;
 use app\database\seeders\RbacSeeder;
 use app\database\seeders\UserSeeder;
-use manchenkov\yii\console\Command;
+use manchenkov\yii\console\command\Command;
 
 /**
  * Seeder for loading fake or prepared data into a database
  * @package App\Commands
  */
-class SeedController extends Command
+final class SeedController extends Command
 {
     /**
      * List of actions which provides data to seeding

@@ -15,12 +15,12 @@ use yii\base\Action;
  *
  * @property-read Command $controller
  */
-class UserSeeder extends Action
+final class UserSeeder extends Action
 {
     /**
      * Creates default users
      */
-    public function run()
+    public function run(): void
     {
         $users = [
             [
